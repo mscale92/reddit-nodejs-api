@@ -111,4 +111,5 @@ module.exports = function RedditAPI(conn) {
       );
     }
   }
+  //return closing tag
 }
