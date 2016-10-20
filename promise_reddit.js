@@ -82,9 +82,9 @@ function getPromise(connect){
     //
     
     getAllPosts: function(options){
-      // if(options === false){
-      //   options = {};
-      // }
+      if(options === false){
+        options = {};
+      }
       
       var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
       var offset = (options.page || 0) * limit;
@@ -102,6 +102,27 @@ function getPromise(connect){
           return results;
         })
       
+    },
+    
+    getAllPostsforUsers: function(options, userId){
+      if(options === false){
+        options = {};
+      }
+      
+      var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
+      var offset = (options.page || 0) * limit;
+      
+      return queryPromise(`SELECT p.id, 
+      title, url, userId, p.createdAt, p.updatedAt ,u.username 
+      FROM posts p 
+      join users u on (p.userId = u.id) 
+      where userId = ?
+      ORDER BY createdAt DESC 
+      LIMIT ? OFFSET ?`
+      ,[userId, limit, offset], connect)
+      .then(function(results){
+        return results;
+      })
     }
   }
 }
@@ -110,8 +131,3 @@ function getPromise(connect){
 
 module.exports = getPromise;
 
-`
-        SELECT id, title, url, userId, createdAt, updatedAt
-        FROM posts
-        ORDER BY createdAt DESC
-        LIMIT ? OFFSET ?`

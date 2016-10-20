@@ -26,17 +26,20 @@ var myPost = {
     userId: 10
 }
 
-function makeAUserandPost(){
+var firstPost = {
+    title: "Mew",
+    url: "https://www.reddit.com",
+    userId: ""
+}
+
+function makeAUserandPost(username, pass){
     reddit.createUser({
-        username: 'Mary92',
-        password: 'xxx'
+        username: username,
+        password: pass
     })
     .then(function(user){
-        return reddit.createPost({
-          title: 'hi reddit, this is Mary!',
-          url: 'https://www.reddit.com',
-          userId: user.id
-        });
+        firstPost.userId = user.id
+        return reddit.createPost(firstPost);
     })
     .then(function(result){
         console.log(result);
@@ -94,6 +97,39 @@ function showAllPosts(){
     })
 }
 
-showAllPosts();
+function fetchUserPosts(userId){
+    return reddit.getAllPostsforUsers(postPerPage, userId)
+    .then(function(userPosts){
+        // console.log(userPosts);
+        return userPosts.map(function(post, idx){
+            if(idx === 0){
+               return {username: post.username, userId: post.userId,
+               id: post.id, title: post.title, url: post.url, 
+               createdAt: post.createdAt, updatedAt: post.updatedAt}
+            }
+            else{
+                return {id: post.id, title: post.title, url: post.url, 
+               createdAt: post.createdAt, updatedAt: post.updatedAt}
+            }
+        })
+    })
+    .then(function(results){
+        console.log(results);
+        connection.end()
+    })
+    .catch(function(err){
+        console.log(err);
+        connection.end();
+    });
+}
+//end of fetchUserPosts
+    //grabs all the posts that a user has posted
+    //just needs the userId number as a parameter
+
+fetchUserPosts(10);
+
+// showAllPosts();
 
 // makeAPost();
+
+// makeAUserandPost("Beast", "yyy");
