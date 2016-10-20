@@ -20,13 +20,13 @@ var postPerPage = {
     page: 0
 }
 
-var myPost = {
-    title: "This is my second post",
-    url: 'https://www.reddit.com',
-    userId: 10
-}
+// var myPost = {
+//     title: "This is my second post",
+//     url: 'https://www.reddit.com',
+//     userId: 10
+// }
 
-var firstPost = {
+var myPost = {
     title: "Mew",
     url: "https://www.reddit.com",
     userId: ""
@@ -38,8 +38,8 @@ function makeAUserandPost(username, pass){
         password: pass
     })
     .then(function(user){
-        firstPost.userId = user.id
-        return reddit.createPost(firstPost);
+        myPost.userId = user.id
+        return reddit.createPost(myPost);
     })
     .then(function(result){
         console.log(result);
@@ -53,7 +53,8 @@ function makeAUserandPost(username, pass){
     });
 }
 
-function makeAPost(){
+function makeAPost(userId){
+    myPost.userId = userId;
     return reddit.createPost(myPost)
     .then(function(postResults){
         console.log(postResults);
@@ -64,7 +65,14 @@ function makeAPost(){
         connection.end();
     })
 }
-
+//make a Post
+    //takes a userId as a parameter
+    //so that the created posts are associated
+    //with the correct user
+    
+function fetchPost(postId){
+    
+}
 
 function showAllPosts(){
     return reddit.getAllPosts(postPerPage)
@@ -96,9 +104,10 @@ function showAllPosts(){
         connection.end();
     })
 }
+//show all posts function
 
 function fetchUserPosts(userId){
-    return reddit.getAllPostsforUsers(postPerPage, userId)
+    return reddit.getAllPostsforUser(postPerPage, userId)
     .then(function(userPosts){
         // console.log(userPosts);
         return userPosts.map(function(post, idx){
@@ -126,7 +135,19 @@ function fetchUserPosts(userId){
     //grabs all the posts that a user has posted
     //just needs the userId number as a parameter
 
-fetchUserPosts(10);
+function fetchSinglePost(postId){
+    return reddit.getPost(postPerPage, postId)
+    .then(function(result){
+        console.log(result);
+        connection.end();
+    })
+    .catch(function(error){
+        console.log(error);
+        connection.end();
+    })
+}
+
+fetchSinglePost(3);
 
 // showAllPosts();
 

@@ -79,7 +79,26 @@ function getPromise(connect){
     },
     //end of createPost promise function
     
-    //
+    getPost: function(options, postId){
+      if(options === false){
+        options = {};
+      }
+      
+      var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
+      var offset = (options.page || 0) * limit;
+      
+      return queryPromise(`select 
+        p.id ,title ,url ,p.createdAt ,p.updatedAt ,username ,userId
+        from posts p 
+        join users u on (u.id = p.userId)  
+        where p. id = ?
+        LIMIT ? OFFSET ?`, 
+        [postId, limit, offset], connect)
+        .then(function(postResult){
+          return postResult;
+        })
+    },
+    //end of getPost function
     
     getAllPosts: function(options){
       if(options === false){
@@ -103,8 +122,9 @@ function getPromise(connect){
         })
       
     },
+    //end of getAllPosts function
     
-    getAllPostsforUsers: function(options, userId){
+    getAllPostsforUser: function(options, userId){
       if(options === false){
         options = {};
       }
@@ -124,6 +144,7 @@ function getPromise(connect){
         return results;
       })
     }
+    //end of getAllPostsforUser
   }
 }
 
