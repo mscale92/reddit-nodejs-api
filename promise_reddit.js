@@ -179,8 +179,43 @@ function getPromise(connect){
       .then(function(results){
         return results;
       })
-    }
+    },
     //end of getAllPostsforUser
+    
+    createSubreddit: function(sub){
+      return queryPromise(`INSERT INTO
+        subreddits
+        (name, description, createdAt)
+        values (?, ?, ?)`
+        ,[sub.name, sub.description, new Date()], connect)
+        .then(function(subResult){
+          return subResult;
+        })
+    },
+    //end of createSubreddit function
+    
+    getAllSubreddits: function(options){
+      if(options === false){
+        options = {};
+      }
+      
+      var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
+      var offset = (options.page || 0) * limit;
+      return queryPromise(`select 
+        id
+        ,name
+        ,description
+        ,createdAt
+        ,updatedAt
+        from subreddits
+        order by id desc
+        limit ? offset ?`
+        , [limit, offset], connect)
+        .then(function(result){
+          return result;
+        })
+    }
+    //end of getAllSubreddits
   }
 }
 
