@@ -143,8 +143,25 @@ function getPromise(connect){
       .then(function(results){
         return results;
       })
-    }
+    },
     //end of getAllPostsforUser
+    
+    createSubreddit: function(sub){
+      return queryPromise(`INSERT INTO
+        subreddits
+        (name, description, createdAt)
+        values (?, ?, ?);`
+        ,[sub.name, sub.description, new Date()], connect)
+        .then(function(subResult){
+          return subResult;
+        })
+    },
+    //end of createSubreddit function
+    
+    getAllSubreddits: function(){
+      
+    }
+    //end of getAllSubreddits
   }
 }
 

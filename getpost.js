@@ -147,7 +147,25 @@ function fetchSinglePost(postId){
     })
 }
 
-fetchSinglePost(3);
+var subName = {
+    name: "Hey!",
+    description: "blue"
+}
+
+function createSubs(sub){
+    return reddit.createSubreddit(sub)
+    .then(function(subReds){
+        console.log(subReds);
+        connection.end();
+    })
+    .catch(function(err){
+        console.log(err, "red");
+        connection.end();
+    })
+}
+
+createSubs(subName);
+// fetchSinglePost(3);
 
 // showAllPosts();
 
