@@ -120,6 +120,42 @@ function getPromise(connect){
         .then(function(results){
           return results;
         })
+        .then(function(allPosts){
+        // console.log(allPosts);
+        
+        
+          return allPosts.map(function(post){
+          post.user = {
+              id: post.user, 
+              username: post.Username, 
+              createdAt: post.uCreatedAt, 
+              updatedAt: post.uUpdatedAt
+          }
+              //add all of our user information to our object
+          delete post.Username;
+          delete post.uCreatedAt;
+          delete post.uUpdatedAt;
+              //delete the extra user information
+          
+          post["subreddit"] = {
+              name: post.name,
+              description: post.description,
+              createdAt: post.subCreated,
+              updatedAt: post.subUpdated
+          }
+              //organize all subreddit info into an object
+              //for a neatness factor
+          
+          delete post.name;
+          delete post.subCreated;
+          delete post.description;
+          delete post.subUpdated
+              //delete extra subreddit data
+          
+          return post;   
+       })
+    })
+    
       
     },
     //end of getAllPosts function
