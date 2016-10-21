@@ -16,10 +16,23 @@ var connection = mysql.createConnection({
 var reddit = require('./promise_reddit')(connection);
 
 var postPerPage = {
-    numPerPage: 5,
+    numPerPage: 10,
     page: 0
 }
+//determines how man posts are shown per page
+    //numPerPage is limit
+    //page is offset
+    
 
+var myVote = {
+    postId: 12,
+    userId: 10,
+    vote: 0,
+}
+//vote object used to vote on a post
+    //both ids are necessary so that the program knows which post the
+    //vote is on
+    //vote is an integer of either 0, 1, or -1
 
 
 var myPost = {
@@ -149,13 +162,30 @@ function createSubs(sub){
     })
 }
 
+
+function castOrChangeVote(vote){
+    return reddit.createOrUpdateVote(vote)
+    .then(function(results){
+        console.log(results);
+        connection.end();   
+    })
+    .catch(function(err){
+        console.log(err);
+        connection.end();
+    })
+
+}
+
+
+castOrChangeVote(myVote);
+
 // showAllSubreddits(postPerPage);
 
 // createSubs(subName);
 
 // fetchSinglePost(3);
 
-showAllPosts(postPerPage);
+// showAllPosts(postPerPage);
 
 // makeAPost(11, 5);
 

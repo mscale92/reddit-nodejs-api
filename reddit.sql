@@ -42,3 +42,9 @@ alter table
 `posts`
 add (`subredditId` int, foreign key (subredditId) references `subreddits` (id) on delete set null
 );
+
+-- This creates a votes table
+create table votes 
+(postId int(11), userId int(11), constraint `postId` foreign key (postId) references posts(id) 
+,constraint `userId` foreign key (userId) references users(id), primary key (userId, postId)
+,vote tinyint, createdAt datetime not null, updatedAt datetime not null)

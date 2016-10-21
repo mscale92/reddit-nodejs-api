@@ -117,14 +117,14 @@ function getPromise(connect){
       return queryPromise(`
       SELECT 
       p.id as id, title, url, userId, p.createdAt, p.updatedAt 
-      ,u.id as user ,u.username as Username ,u.createdAt as uCreatedAt ,u.updatedAt as uUpdatedAt
-      ,s.name ,s.description ,s.createdAt as subCreated ,s.updatedAt as subUpdated
+      ,u.id as user ,u.username as Username
+      ,s.name ,s.description 
       FROM posts p 
       JOIN users u on (p.userId = u.id)
-      Left JOIN subreddits s on (p.subredditId = s.id)
+      JOIN subreddits s on (p.subredditId = s.id)
       ORDER BY createdAt DESC 
       LIMIT ? OFFSET ?
-        `
+        ` //no need for Left Join, all posts should have subreddits
         , [limit, offset], connect)
         .then(function(results){
           return results;
@@ -136,29 +136,23 @@ function getPromise(connect){
           return allPosts.map(function(post){
           post.user = {
               id: post.user, 
-              username: post.Username, 
-              createdAt: post.uCreatedAt, 
-              updatedAt: post.uUpdatedAt
+              username: post.Username
+              
           }
               //add all of our user information to our object
           delete post.Username;
-          delete post.uCreatedAt;
-          delete post.uUpdatedAt;
               //delete the extra user information
           
           post["subreddit"] = {
               name: post.name,
-              description: post.description,
-              createdAt: post.subCreated,
-              updatedAt: post.subUpdated
+              description: post.description
+              
           }
               //organize all subreddit info into an object
               //for a neatness factor
           
           delete post.name;
           delete post.subCreated;
-          delete post.description;
-          delete post.subUpdated
               //delete extra subreddit data
           
           return post;   
@@ -238,9 +232,31 @@ function getPromise(connect){
         .then(function(result){
           return result;
         })
-    }
+    },
     //end of getAllSubreddits
+    
+    createOrUpdateVote: function(vote){
+      if(vote.vote === 1 || vote.vote === 0 || vote.vote === -1){
+         return queryPromise(`INSERT INTO votes 
+         SET postId = ?, userId = ?, vote = ?, createdAt = ?
+         ON DUPLICATE KEY UPDATE vote = ?, updatedAt = ?`,
+         [vote.postId, vote.userId, vote.vote, new Date(),
+          //first insert user, post, vote count, and createdAt date
+         vote.vote, new Date()], connect)
+          //update vote and updatedAt date
+         .then(function(results){
+           return results;
+         })
+      }
+      else{
+        console.log(vote.vote, " is not a proper vote amount.");
+        return;
+      }
+    }
+    //end of createVote function
+    
   }
+  //end of return
 }
 
 
