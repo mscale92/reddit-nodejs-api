@@ -111,8 +111,11 @@ function getPromise(connect){
       return queryPromise(`
       SELECT 
       p.id as id, title, url, userId, p.createdAt, p.updatedAt 
-      ,u.id as user ,u.username as Username ,u.createdAt as uCreatedAt ,u.updatedAt as uUpdatedAt 
-      FROM posts p join users u on (p.userId = u.id) 
+      ,u.id as user ,u.username as Username ,u.createdAt as uCreatedAt ,u.updatedAt as uUpdatedAt
+      ,s.name ,s.description ,s.createdAt as subCreated ,s.updatedAt as subUpdated
+      FROM posts p 
+      JOIN users u on (p.userId = u.id)
+      Left JOIN subreddits s on (p.subredditId = s.id)
       ORDER BY createdAt DESC 
       LIMIT ? OFFSET ?
         `
