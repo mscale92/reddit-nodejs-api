@@ -65,10 +65,10 @@ function getPromise(connect){
     //
     createPost: function(post){
       return(
-        queryPromise('INSERT INTO posts (userId, title, url, createdAt) VALUES (?, ?, ?, ?)', 
-        [post.userId, post.title, post.url, new Date()], connect)
+        queryPromise('INSERT INTO posts (userId, title, url, subredditId, createdAt) VALUES (?, ?, ?, ?, ?)', 
+        [post.userId, post.title, post.url, post.subredditId, new Date()], connect)
         .then(function(result){
-          return queryPromise('SELECT id,title,url,userId, createdAt, updatedAt FROM posts WHERE id = ?', [result.insertId],
+          return queryPromise('SELECT id,title,url,userId, createdAt, updatedAt, subredditId FROM posts WHERE id = ?', [result.insertId],
           connect);
         })
         .then(function(result){
@@ -111,8 +111,10 @@ function getPromise(connect){
       return queryPromise(`
       SELECT 
       p.id as id, title, url, userId, p.createdAt, p.updatedAt 
-      ,u.id as user ,u.username as Username ,u.createdAt as uCreatedAt ,u.updatedAt as uUpdatedAt 
+      ,u.id as user ,u.username as Username ,u.createdAt as uCreatedAt ,u.updatedAt as uUpdatedAt
+      ,s.name ,s.description ,s.createdAt as subCreated ,s.updatedAt as subUpdated
       FROM posts p join users u on (p.userId = u.id) 
+      JOIN subreddits s on (p.subredditId = s.id) 
       ORDER BY createdAt DESC 
       LIMIT ? OFFSET ?
         `

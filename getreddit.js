@@ -27,9 +27,10 @@ var postPerPage = {
 // }
 
 var myPost = {
-    title: "Mew",
+    title: "HELLO!!",
     url: "https://www.reddit.com",
-    userId: ""
+    userId: "",
+    subredditId: "",
 }
 //object that determines a post's url, title, and the userId associated with it
 
@@ -63,8 +64,9 @@ function makeAUserandPost(username, pass){
     });
 }
 
-function makeAPost(userId){
+function makeAPost(userId, subredditId){
     myPost.userId = userId;
+    myPost.subredditId = subredditId;
     return reddit.createPost(myPost)
     .then(function(postResults){
         console.log(postResults);
@@ -101,7 +103,8 @@ function showAllPosts(){
     return reddit.getAllPosts(postPerPage)
     .then(function(allPosts){
         // console.log(allPosts);
-        //
+        
+        //Maybe try this weekend to rework with reduce...
        return allPosts.map(function(post){
         post.user = {
             id: post.user, 
@@ -109,11 +112,27 @@ function showAllPosts(){
             createdAt: post.uCreatedAt, 
             updatedAt: post.uUpdatedAt
         }
-            //add all of our information to our object
+            //add all of our user information to our object
         delete post.Username;
         delete post.uCreatedAt;
         delete post.uUpdatedAt;
-            //delete the extra information
+            //delete the extra user information
+        
+        post["subreddit"] = {
+            name: post.name,
+            description: post.description,
+            createdAt: post.subCreated,
+            updatedAt: post.subUpdated
+        }
+            //organize all subreddit info into an object
+            //for a neatness factor
+        
+        delete post.name;
+        delete post.subCreated;
+        delete post.description;
+        delete post.subUpdated
+            //delete extra subreddit data
+        
         return post;   
        })
     })
@@ -183,14 +202,14 @@ function createSubs(sub){
     })
 }
 
-showAllSubreddits(postPerPage);
+// showAllSubreddits(postPerPage);
 
 // createSubs(subName);
 
 // fetchSinglePost(3);
 
-// showAllPosts();
+showAllPosts();
 
-// makeAPost();
+// makeAPost(10, 1);
 
 // makeAUserandPost("Beast", "yyy");
