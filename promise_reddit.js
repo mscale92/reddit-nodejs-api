@@ -113,18 +113,53 @@ function getPromise(connect){
       
       var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
       var offset = (options.page || 0) * limit;
+      var sorting = options.sortingMethod;
       
+      
+      
+        if(sorting === "top"){
+          sorting = "voteScore";
+        }
+        else if(sorting === "newest"){
+          sorting = "v.createdAt";
+        }
+        else if(sorting === "hot"){
+          sorting = "sum(vote)/unix_timestamp(v.createdAt)"
+        }
+        else if(sorting === "contro"){
+          sorting = `CASE
+          when sum(case when vote = 1 then 1 else 0 end) < sum(case when vote = -1 then 1 else 0 end)
+            then count(vote) * (sum(case when vote = 1 then 1 else 0 end) / sum(case when vote = -1 then 1 else 0 end))
+          when sum(case when vote = 1 then 1 else 0 end) > sum(case when vote = -1 then 1 else 0 end)
+          then count(vote) * (sum(case when vote = -1 then 1 else 0 end)/sum(case when vote = 1 then 1 else 0 end))
+          end`
+        }
+        //HERE!~!!!
+        else{
+          sorting = "p.id";
+        }
+      
+      
+        
       return queryPromise(`
       SELECT 
-      p.id as id, title, url, userId, p.createdAt, p.updatedAt 
+      p.id as id, title, url, p.userId, p.createdAt, p.updatedAt
+      ,sum(vote) as voteScore
+      ,sum(case when vote = 1 then 1 else 0 end) as up
+      ,sum(case when vote = -1 then 1 else 0 end) as down
       ,u.id as user ,u.username as Username
       ,s.name ,s.description 
       FROM posts p 
       JOIN users u on (p.userId = u.id)
       JOIN subreddits s on (p.subredditId = s.id)
-      ORDER BY createdAt DESC 
+      LEFT JOIN votes v on (p.id = v.postId)
+      GROUP BY p.id
+      ORDER BY ${sorting} DESC
       LIMIT ? OFFSET ?
-        ` //no need for Left Join, all posts should have subreddits
+        ` //${sorting} 
+        //no need for Left Join, all posts should have subreddits
+        // ${} is part of node.js, it tells the program that this
+          //is a variable, great for using within backticks 
         , [limit, offset], connect)
         .then(function(results){
           return results;
@@ -152,7 +187,7 @@ function getPromise(connect){
               //for a neatness factor
           
           delete post.name;
-          delete post.subCreated;
+          delete post.description;
               //delete extra subreddit data
           
           return post;   

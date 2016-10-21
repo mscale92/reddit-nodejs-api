@@ -15,19 +15,20 @@ var connection = mysql.createConnection({
 // load our API and pass it the connection
 var reddit = require('./promise_reddit')(connection);
 
-var postPerPage = {
-    numPerPage: 10,
-    page: 0
+var options = {
+    numPerPage: 5,
+    page: 0,
+    sortingMethod: "contro"
 }
-//determines how man posts are shown per page
+//determines how man posts are shown per page, as well the sorting of votes
     //numPerPage is limit
     //page is offset
     
 
 var myVote = {
-    postId: 12,
-    userId: 10,
-    vote: 0,
+    postId: 10,
+    userId: 12,
+    vote: -1,
 }
 //vote object used to vote on a post
     //both ids are necessary so that the program knows which post the
@@ -123,7 +124,7 @@ function showAllPosts(postsOptions){
 //show all posts function
 
 function fetchUserPosts(userId){
-    return reddit.getAllPostsforUser(postPerPage, userId)
+    return reddit.getAllPostsforUser(options, userId)
     .then(function(results){
         console.log(results);
         connection.end()
@@ -137,8 +138,8 @@ function fetchUserPosts(userId){
     //grabs all the posts that a user has posted
     //just needs the userId number as a parameter
 
-function fetchSinglePost(postId){
-    return reddit.getPost(postPerPage, postId)
+function fetchSinglePost(postId, options){
+    return reddit.getPost(options, postId)
     .then(function(result){
         console.log(result);
         connection.end();
@@ -177,15 +178,15 @@ function castOrChangeVote(vote){
 }
 
 
-castOrChangeVote(myVote);
+// castOrChangeVote(myVote);
 
-// showAllSubreddits(postPerPage);
+// showAllSubreddits(options);
 
 // createSubs(subName);
 
 // fetchSinglePost(3);
 
-// showAllPosts(postPerPage);
+showAllPosts(options);
 
 // makeAPost(11, 5);
 
