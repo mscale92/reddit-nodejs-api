@@ -24,9 +24,9 @@ CREATE TABLE `posts` (
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL
 );
 
---Mary's additions
+-- Mary's additions
 
---This creates the table subreddits.
+-- This creates the table subreddits.
 create table `subreddits` (
   `id` int primary key auto_increment not null, 
   `name` varchar(30) unique key NOT NULL, 
@@ -37,7 +37,7 @@ create table `subreddits` (
 
 
 
---This alters the posts table to have a subreddit id that is a foreign key
+-- This alters the posts table to have a subreddit id that is a foreign key
 alter table
 `posts`
 add (`subredditId` int, foreign key (subredditId) references `subreddits` (id) on delete set null

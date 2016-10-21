@@ -31,6 +31,16 @@ var myPost = {
     url: "https://www.reddit.com",
     userId: ""
 }
+//object that determines a post's url, title, and the userId associated with it
+
+var subName = {
+    name: "Hey!",
+    description: "blue"
+}
+//determines the name and description of a subreddit
+
+
+//functions ahoy!
 
 function makeAUserandPost(username, pass){
     reddit.createUser({
@@ -70,9 +80,22 @@ function makeAPost(userId){
     //so that the created posts are associated
     //with the correct user
     
-function fetchPost(postId){
     
+    
+function showAllSubreddits(postPerPage){
+    return reddit.getAllSubreddits(postPerPage)
+    .then(function(subreddits){
+        console.log(subreddits);
+        connection.end();
+    })
+    .catch(function(error){
+        console.log(error);
+        connection.end();
+    })
 }
+//end
+
+
 
 function showAllPosts(){
     return reddit.getAllPosts(postPerPage)
@@ -147,10 +170,6 @@ function fetchSinglePost(postId){
     })
 }
 
-var subName = {
-    name: "Hey!",
-    description: "blue"
-}
 
 function createSubs(sub){
     return reddit.createSubreddit(sub)
@@ -164,7 +183,10 @@ function createSubs(sub){
     })
 }
 
-createSubs(subName);
+showAllSubreddits(postPerPage);
+
+// createSubs(subName);
+
 // fetchSinglePost(3);
 
 // showAllPosts();
