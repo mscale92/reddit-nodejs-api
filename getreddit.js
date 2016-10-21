@@ -16,14 +16,14 @@ var connection = mysql.createConnection({
 var reddit = require('./promise_reddit')(connection);
 
 var postPerPage = {
-    numPerPage: 10,
+    numPerPage: 5,
     page: 0
 }
 
 
 
 var myPost = {
-    title: "HELLO!!",
+    title: "Panic! At the Disco",
     url: "https://www.reddit.com",
     userId: "",
     subredditId: "",
@@ -31,8 +31,8 @@ var myPost = {
 //object that determines a post's url, title, and the userId associated with it
 
 var subName = {
-    name: "Hey!",
-    description: "blue"
+    name: "Music",
+    description: "Posts all about music"
 }
 //determines the name and description of a subreddit
 
@@ -111,20 +111,6 @@ function showAllPosts(postsOptions){
 
 function fetchUserPosts(userId){
     return reddit.getAllPostsforUser(postPerPage, userId)
-    .then(function(userPosts){
-        // console.log(userPosts);
-        return userPosts.map(function(post, idx){
-            if(idx === 0){
-               return {username: post.username, userId: post.userId,
-               id: post.id, title: post.title, url: post.url, 
-               createdAt: post.createdAt, updatedAt: post.updatedAt}
-            }
-            else{
-                return {id: post.id, title: post.title, url: post.url, 
-               createdAt: post.createdAt, updatedAt: post.updatedAt}
-            }
-        })
-    })
     .then(function(results){
         console.log(results);
         connection.end()
@@ -171,6 +157,6 @@ function createSubs(sub){
 
 showAllPosts(postPerPage);
 
-// makeAPost(10, 1);
+// makeAPost(11, 5);
 
 // makeAUserandPost("Beast", "yyy");

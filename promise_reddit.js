@@ -38,17 +38,17 @@ function getPromise(connect){
         })
       )
       .then(function(hashedPassword){
-        console.log("blue1")
+        // console.log("blue1")
         return queryPromise('INSERT INTO users (username,password, createdAt) VALUES (?, ?, ?)', 
         [user.username, hashedPassword, new Date()], connect)
       })
       .then(function(result){
-        console.log("green1");
+        // console.log("green1");
         return queryPromise('SELECT id, username, createdAt, updatedAt FROM users WHERE id = ?', 
         [result.insertId], connect)
       })
       .then(function(result){
-        console.log("pink1");
+        // console.log("pink1");
         return result[0];
       })
       .catch(function(err){
@@ -65,10 +65,16 @@ function getPromise(connect){
     //
     createPost: function(post){
       return(
-        queryPromise('INSERT INTO posts (userId, title, url, createdAt) VALUES (?, ?, ?, ?)', 
-        [post.userId, post.title, post.url, new Date()], connect)
+        queryPromise(`INSERT INTO posts 
+        (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)`, 
+        [post.userId, post.title, post.url, new Date(), post.subredditId], connect)
         .then(function(result){
-          return queryPromise('SELECT id,title,url,userId, createdAt, updatedAt FROM posts WHERE id = ?', [result.insertId],
+          return queryPromise(`SELECT 
+          p.id,title,url,userId, p.createdAt, p.updatedAt
+          ,subredditId ,name ,description
+          FROM posts p
+          Join subreddits s on (p.subredditId = s.id)
+          WHERE p.id = ?`, [result.insertId],
           connect);
         })
         .then(function(result){
@@ -181,6 +187,21 @@ function getPromise(connect){
       ,[userId, limit, offset], connect)
       .then(function(results){
         return results;
+      })
+      .then(function(userPosts){
+        // console.log(userPosts);
+        return userPosts.map(function(post, idx){
+            if(idx === 0){
+               return {username: post.username, userId: post.userId,
+               id: post.id, title: post.title, url: post.url, 
+               createdAt: post.createdAt, updatedAt: post.updatedAt}
+            }
+            else{
+                return {id: post.id, title: post.title, url: post.url, 
+               createdAt: post.createdAt, updatedAt: post.updatedAt}
+            }
+        })
+        //nicely organize our user posts
       })
     },
     //end of getAllPostsforUser
