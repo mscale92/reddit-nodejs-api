@@ -131,7 +131,7 @@ function getPromise(connect){
           when sum(case when vote = 1 then 1 else 0 end) < sum(case when vote = -1 then 1 else 0 end)
             then count(vote) * (sum(case when vote = 1 then 1 else 0 end) / sum(case when vote = -1 then 1 else 0 end))
           when sum(case when vote = 1 then 1 else 0 end) > sum(case when vote = -1 then 1 else 0 end)
-          then count(vote) * (sum(case when vote = -1 then 1 else 0 end)/sum(case when vote = 1 then 1 else 0 end))
+            then count(vote) * (sum(case when vote = -1 then 1 else 0 end)/sum(case when vote = 1 then 1 else 0 end))
           end`
         }
         //HERE!~!!!
@@ -287,8 +287,18 @@ function getPromise(connect){
         console.log(vote.vote, " is not a proper vote amount.");
         return;
       }
-    }
+    },
     //end of createVote function
+    
+    createComment: function(comment){
+      return queryPromise(`insert into comments                                               
+    -> (text, userId, postId, parentId)                                             
+    -> values (? ,? ,? ,?)`, 
+    [comment.text, comment.userId, comment.postId, comment.parentId], connect)
+      .then(function(results){
+        console.log(results);
+      })
+    }
     
   }
   //end of return

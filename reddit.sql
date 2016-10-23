@@ -54,8 +54,8 @@ create table votes
 
 create table comments (id int primary key auto_increment 
 ,`text` text 
-,createdAt datetime 
-,updatedAt datetime 
+,createdAt datetime not null
+,updatedAt datetime not null
 ,userId int ,foreign key (userId) references users (id) 
 ,postId int ,foreign key (postId) references posts (id) 
 ,parentId int default null);
