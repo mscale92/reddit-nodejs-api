@@ -184,7 +184,7 @@ function castOrChangeVote(vote){
 
 // createSubs(subName);
 
-// fetchSinglePost(3);
+// fetchSinglePost(10, options);
 
 showAllPosts(options);
 

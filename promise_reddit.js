@@ -101,7 +101,7 @@ function getPromise(connect){
         LIMIT ? OFFSET ?`, 
         [postId, limit, offset], connect)
         .then(function(postResult){
-          return postResult;
+          return postResult[0];
         })
     },
     //end of getPost function
