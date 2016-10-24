@@ -5,9 +5,19 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
+
+//exercise 1
 app.get('/hello', function(require, response){
    response.send('<h1>Hello World!</h1>'); 
 });
+    //if the url, http://reddit-nodejs-mscale92.c9users.io/,
+    //has a hello added to the path, Hello World will print
+    //as an h1 string in html
+
+
+
+
+
 
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
