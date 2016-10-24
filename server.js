@@ -7,12 +7,21 @@ app.get('/', function (req, res) {
 
 
 //exercise 1
-app.get('/hello', function(require, response){
-   response.send('<h1>Hello World!</h1>'); 
+app.get('/hello', function(request, response, next){
+    console.log(request.query);
+    var rep = request.query.name ? request.query.name : "World";
+            //exercise 2
+            //a ternary operator allows the choice of one
+            //query or the other
+                //if request.query.name exists, then use the query
+                //otherwise, use World
+            //This allows for multiple choices with the same function
+   response.send('<h1>Hello '+ rep +' !</h1>'); 
+                            
+   
 });
-    //if the url, http://reddit-nodejs-mscale92.c9users.io/,
-    //has a hello added to the path, Hello World will print
-    //as an h1 string in html
+
+
 
 
 
