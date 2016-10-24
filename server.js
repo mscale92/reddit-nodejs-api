@@ -108,6 +108,11 @@ app.get('/posts', function(req, res){
     .then(function(postsHTML){
         
         res.send(postsHTML);
+        connection.end();
+    })
+    .catch(function(err){
+        console.log(err);
+        connection.end();
     })
     
     
@@ -125,6 +130,25 @@ app.get('/posts', function(req, res){
     ... one <li> per content that your SQL query found
   </ul>
 </div>*/
+
+
+//exercise 5
+
+app.get(`/createContent`, function(req, res){
+   var html = `<form action="/createContent" method="POST"> 
+  <div>
+    <input type="text" name="url" placeholder="Enter a URL to content">
+  </div>
+  <div>
+    <input type="text" name="title" placeholder="Enter the title of your content">
+  </div>
+  <button type="submit">Create!</button>
+</form>`
+    res.send(html);
+})
+
+
+
 
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
