@@ -7,8 +7,9 @@ app.get('/', function (req, res) {
 
 
 //exercise 1
-app.get('/hello', function(request, response, next){
+app.get('/hello', function(request, response){
     console.log(request.query);
+    //shows the query that was entered 
     var rep = request.query.name ? request.query.name : "World";
             //exercise 2
             //a ternary operator allows the choice of one
@@ -22,7 +23,15 @@ app.get('/hello', function(request, response, next){
 });
 
 
-
+//exercise 3
+app.get('/flights/:from-:to', function(request, response){
+   console.log(request.params);
+  //shows the parameter object that was entered
+   response.send(request.params);
+   
+   
+    
+});
 
 
 
