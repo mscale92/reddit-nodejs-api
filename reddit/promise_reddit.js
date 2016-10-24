@@ -292,11 +292,55 @@ function getPromise(connect){
     
     createComment: function(comment){
       return queryPromise(`insert into comments                                               
-    -> (text, userId, postId, parentId)                                             
-    -> values (? ,? ,? ,?)`, 
+    (text, userId, postId, parentId)                                             
+    values (? ,? ,? ,?)`, 
     [comment.text, comment.userId, comment.postId, comment.parentId], connect)
       .then(function(results){
-        console.log(results);
+        return results;
+      })
+    },
+    //end of createComment function
+    
+    getCommentsforPost: function(postId){
+      return queryPromise(`select 
+            id, text, parentId, userId 
+            from comments 
+            where parentId is null 
+            order by id`, [postId], connect)
+      .then(function(results){
+      function thread(array){
+        return array.map(function(comment){
+          
+           
+            return queryPromise(`select 
+            id, text, parentId, userId 
+            from comments 
+            where parentId = ? 
+            order by id` 
+            ,[comment.id] ,connect)
+            .then(function(reply){
+              comment.replies = reply;
+              if(reply[0] === false){
+                return comment;
+              }
+              else{
+              thread(comment.replies);
+              //recursion happens here
+              return comment;
+              }
+            })
+        
+          
+        })
+        //end of map
+      }
+      
+      
+      return Promise.all(thread(results));
+      })
+      .then(function(results){
+        results = JSON.stringify(results, null, 4)
+        return results;
       })
     }
     
@@ -306,5 +350,60 @@ function getPromise(connect){
 
 
 
+
+
+
+function thread(array){
+  return array.map(function(comment){
+    if(comment.parentId === null){
+      comment.replies = [];
+      return queryPromise(`select 
+      id, text, parentId, userId 
+      from comments 
+      where parentId = ? 
+      order by id` 
+      ,[comment.id] ,connect)
+      .then(function(reply){
+        comment.replies.push(reply);
+        thread(reply);
+        //recursion happens here
+        return;
+      })
+    }
+    else{
+      comment.replies = [];
+      return queryPromise(`select 
+      id, text, parentId, userId 
+      from comments 
+      where parentId = ? 
+      order by id` ,[comment.id] ,connect)
+      .then(function(reply){
+        comment.replies.push(reply);
+        return;
+      })
+    }
+    
+  })
+  //end of map
+}
+//end of function thread
+
+
 module.exports = getPromise;
 
+// return queryPromise(`select id, text, parentId, userId from comments where postId = ? and parentId is null order by id`
+//       ,[postId] ,connect)
+
+
+// function commentChain(parentId){
+//         return queryPromise(`select id, text, parentId, userId from comments where postId = ? and parentId is ? order by id`
+//         ,[postId, parentId] ,connect)
+//         .then(function(results){
+         
+//           return results.map(function(comment){
+//             return comment.id;
+//           })
+//         })
+//       }
+      
+//       return commentChain(null)

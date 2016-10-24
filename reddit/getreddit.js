@@ -19,7 +19,7 @@ var options = {
     numPerPage: 5,
     page: 0,
     sortingMethod: "contro"
-}
+};
 //determines how man posts are shown per page, as well the sorting of votes
     //numPerPage is limit
     //page is offset
@@ -29,12 +29,19 @@ var myVote = {
     postId: 10,
     userId: 12,
     vote: -1,
-}
+};
 //vote object used to vote on a post
     //both ids are necessary so that the program knows which post the
     //vote is on
     //vote is an integer of either 0, 1, or -1
 
+var myComment = {
+    text: "What's this? Brentalfloss songs?!",
+    userId: 10,
+    postId: 8,
+    parentId: null
+};
+//object that creates a comment
 
 var myPost = {
     title: "Panic! At the Disco",
@@ -177,6 +184,33 @@ function castOrChangeVote(vote){
 
 }
 
+function makeComment(comment){
+    return reddit.createComment(comment)
+    .then(function(results){
+        console.log(results);
+        connection.end();
+    })
+    .catch(function(err){
+        console.log(err);
+        connection.end();
+    });
+}
+
+function showComments(postId){
+    return reddit.getCommentsforPost(postId)
+    .then(function(results){
+        console.log(results);
+        connection.end();
+    })
+    .catch(function(err){
+        console.log(err);
+        connection.end();
+    });
+}
+
+showComments(8);
+
+// makeComment(myComment);
 
 // castOrChangeVote(myVote);
 
@@ -186,7 +220,7 @@ function castOrChangeVote(vote){
 
 // fetchSinglePost(10, options);
 
-showAllPosts(options);
+// showAllPosts(options);
 
 // makeAPost(11, 5);
 
