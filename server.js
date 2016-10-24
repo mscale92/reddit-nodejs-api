@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser')
+    //parse our form data
 
 // load the mysql library
 var mysql = require('mysql');
@@ -16,6 +18,11 @@ var connection = mysql.createConnection({
 // load our API and pass it the connection
 var reddit = require('./reddit/promise_reddit')(connection);
 
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
 
 app.get('/', function (req, res) {
@@ -132,9 +139,9 @@ app.get('/posts', function(req, res){
 </div>*/
 
 
-//exercise 5
+//exercises 5 & 6
 
-app.get(`/createContent`, function(req, res){
+app.get(`/createContent`, function(req, res, next){
    var html = `<form action="/createContent" method="POST"> 
   <div>
     <input type="text" name="url" placeholder="Enter a URL to content">
@@ -144,8 +151,32 @@ app.get(`/createContent`, function(req, res){
   </div>
   <button type="submit">Create!</button>
 </form>`
+    
     res.send(html);
+    next();
 })
+//give our user a form to fill out with get
+
+app.post(`/createContent`, function(req, res, next){
+    
+    var post = {
+        url: req.body.url,
+        title: req.body.title,
+        userId: 1,
+        subredditId: 6
+    }
+    
+    return reddit.createPost(post)
+    .then(function(results){
+        console.log(results);
+        
+        res.send("yo");
+        connection.end()
+    })
+    
+})
+//retrieve the data from the form by having the same path
+    //just a post instead of a get and some req.body middleware
 
 
 
