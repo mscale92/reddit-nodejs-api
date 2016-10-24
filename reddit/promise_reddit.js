@@ -342,6 +342,18 @@ function getPromise(connect){
         results = JSON.stringify(results, null, 4)
         return results;
       })
+    },
+    
+    getFive: function(){
+      return queryPromise(`select 
+      p.id, title, url, username 
+      from posts p 
+      join users u on (u.id = p.userId) 
+      order by p.createdAt desc 
+      limit 5;` ,[] ,connect)
+      .then(function(results){
+        return results;
+      })
     }
     
   }

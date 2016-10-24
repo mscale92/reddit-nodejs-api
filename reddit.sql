@@ -52,11 +52,10 @@ create table votes
 
 -- This creates a comments table
 
-create table `comments` 
-(`id` int primary key auto_increment 
-,`texts` text 
-,`createdAt` datetime not null
-,`updatedAt` datetime not null
+create table comments (id int primary key auto_increment 
+,`text` text 
+,createdAt datetime not null
+,updatedAt datetime not null
 ,userId int ,foreign key (userId) references users (id) 
 ,postId int ,foreign key (postId) references posts (id) 
 ,parentId int default null);

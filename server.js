@@ -1,6 +1,23 @@
 var express = require('express');
 var app = express();
 
+// load the mysql library
+var mysql = require('mysql');
+
+
+// create a connection to our Cloud9 server
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'mscale92', 
+  password : '',
+  database: 'reddit'
+});
+
+// load our API and pass it the connection
+var reddit = require('./reddit/promise_reddit')(connection);
+
+
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -66,6 +83,48 @@ app.get('/calculator/:operator', function(req, res){
     //if the input is not any of them, it returns a 405 error,
         //Method not Allowed
 
+
+//exercise 4
+
+app.get('/posts', function(req, res){
+    
+    return reddit.getFive()
+    .then(function(postsFive){
+        return postsFive.map(function(post){
+            
+            return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
+            + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
+            '<p> Created by ' + post.username + '<p> </li> '
+            )
+        })
+    })
+    .then(function(htmlArray){
+        console.log(htmlArray)
+        var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
+        var end = '</ul> </div>'
+        var string = beginning + htmlArray.join('') + end;
+        return string;
+    })
+    .then(function(postsHTML){
+        
+        res.send(postsHTML);
+    })
+    
+    
+})
+
+/* <div id="contents">
+  <h1>List of contents</h1>
+  <ul class="contents-list">
+    <li class="content-item">
+      <h2 class="content-item__title">
+        <a href="http://the.post.url.value/">The content title</a>
+      </h2>
+      <p>Created by CONTENT AUTHOR USERNAME</p>
+    </li>
+    ... one <li> per content that your SQL query found
+  </ul>
+</div>*/
 
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
