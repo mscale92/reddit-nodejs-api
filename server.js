@@ -23,18 +23,48 @@ app.get('/hello', function(request, response){
 });
 
 
-//exercise 3
+//exercise 2.5
 app.get('/flights/:from-:to', function(request, response){
    console.log(request.params);
   //shows the parameter object that was entered
    response.send(request.params);
    
-   
-    
 });
 
 
-
+//exercise 3
+app.get('/calculator/:operator', function(req, res){
+    console.log(req.params);
+    var op = req.params.operator;
+    
+    var num1 = parseFloat(req.query.num1);
+    var num2 = parseFloat(req.query.num2);
+            //make our strings into floating numbers, decimals
+    req.params.firstNum = num1;
+    req.params.secondNum = num2;
+    
+    if(op === "add"){
+        req.params.ans = num1 + num2;
+    }
+    else if(op === "sub"){
+        req.params.ans = num1 - num2;
+    }
+    else if(op === "mult"){
+        req.params.ans = num1 * num2;
+    }
+    else if(op === "div"){
+        req.params.ans = num1 / num2;
+    }
+    else{
+        res.sendStatus(405);
+    }
+    
+    res.send(req.params);
+        //send the final object
+})
+    //if else chain to determine the type of mathmatical operation
+    //if the input is not any of them, it returns a 405 error,
+        //Method not Allowed
 
 
 
