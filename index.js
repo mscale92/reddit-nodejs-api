@@ -6,7 +6,7 @@ app.get('/', function (req, res) {
 });
 
 
-
+app.set('view engine', 'pug');
 
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */

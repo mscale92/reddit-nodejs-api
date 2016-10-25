@@ -3,6 +3,10 @@ var app = express();
 var bodyParser = require('body-parser')
     //parse our form data
 
+const pug = require('pug');
+app.set('view engine', 'pug');
+//template
+
 // load the mysql library
 var mysql = require('mysql');
 
@@ -93,65 +97,94 @@ app.get('/calculator/:operator', function(req, res){
 
 //exercise 4
 
-app.get('/posts/:id', function(req, res){
+app.get('/posts/', function(req, res, next){
     
-    if(req.params.id){
-        var id = parseInt(req.params.id);
+    // if(req.params.id){
+    //     var id = parseInt(req.params.id);
+    //     var options = {
+    //     limit: 1,
+    //     offset: 0
+    //     }
+    //     return reddit.getPost(options, id)
+    //     .then(function(post){
+    //         console.log(post);
+    //         return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
+    //         + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
+    //         '<p> Created by ' + post.username + '<p> </li> '
+    //         );
+        
+    //     })
+    //     .then(function(htmlString){
+            
+    //         var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
+    //         var end = '</ul> </div>'
+    //         var string = beginning + htmlString + end;
+    //         return string;
+    //     })
+    //     .then(function(post){
+    //         res.send(post);
+    //     })
+    //     }
+    // else{
+        return reddit.getFive()
+        // .then(function(results){
+        //     return results;
+        // })
+        .then(function(posts){
+            console.log(posts);
+            
+            res.render('post-list', {posts: posts});
+            next();
+            // connection.end();
+        })
+        .catch(function(err){
+            console.log(err);
+            connection.end();
+        })
+    
+    
+    // else{
+    //   res.sendStatus(405);
+    
+    // }
+})
+
+app.get('/posts/:id', function(req, res, next){
+    var id = parseInt(req.params.id);
         var options = {
         limit: 1,
         offset: 0
         }
         return reddit.getPost(options, id)
         .then(function(post){
-            console.log(post);
-            return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
-            + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
-            '<p> Created by ' + post.username + '<p> </li> '
-            );
+            var posts = [post];
+        res.render('post-list', {posts: posts});
+        //rendering is nifty!
         
-        })
-        .then(function(htmlString){
-            
-            var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
-            var end = '</ul> </div>'
-            var string = beginning + htmlString + end;
-            return string;
-        })
-        .then(function(post){
-            res.send(post);
-        })
-        }
-    
-    else{
-    return reddit.getFive()
-    .then(function(postsFive){
-        return postsFive.map(function(post){
-            
-            return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
-            + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
-            '<p> Created by ' + post.username + '<p> </li> '
-            )
-        })
-    })
-    .then(function(htmlArray){
-        // console.log(htmlArray)
-        var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
-        var end = '</ul> </div>'
-        var string = beginning + htmlArray.join('') + end;
-        return string;
-    })
-    .then(function(postsHTML){
+        //     console.log(post);
+        //     return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
+        //     + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
+        //     '<p> Created by ' + post.username + '<p> </li> '
+        //     );
         
-        res.send(postsHTML);
-        connection.end();
-    })
-    .catch(function(err){
-        console.log(err);
-        connection.end();
-    })
-    
-    }
+        // })
+        // .then(function(htmlString){
+            
+        //     var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
+        //     var end = '</ul> </div>'
+        //     var string = beginning + htmlString + end;
+        //     return string;
+        // })
+        // .then(function(post){
+        //     res.send(post);
+        })
+        .catch(function(err){
+            console.log(err);
+            connection.end();
+        })
+        
 })
+
 
 /* <div id="contents">
   <h1>List of contents</h1>
@@ -170,20 +203,14 @@ app.get('/posts/:id', function(req, res){
 //exercises 5 & 6
 
 app.get(`/createContent`, function(req, res, next){
-   var html = `<form action="/createContent" method="POST"> 
-  <div>
-    <input type="text" name="url" placeholder="Enter a URL to content">
-  </div>
-  <div>
-    <input type="text" name="title" placeholder="Enter the title of your content">
-  </div>
-  <button type="submit">Create!</button>
-</form>`
-    
-    res.send(html);
+    res.render('create-content');
     next();
 })
 //give our user a form to fill out with get
+    //using pug template
+        //found in views folder under
+        //create-content.pug
+
 
 app.post(`/createContent`, function(req, res, next){
     
@@ -208,7 +235,7 @@ app.post(`/createContent`, function(req, res, next){
 //retrieve the data from the form by having the same path
     //just a post instead of a get and some req.body middleware
 
-
+//
 
 
 
@@ -222,3 +249,21 @@ var server = app.listen(process.env.PORT, process.env.IP, function () {
 
   console.log('Example app listening at http://%s:%s', host, port);
 });
+
+    //  return postsFive.map(function(post){
+            
+    //         return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
+    //         + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
+    //         '<p> Created by ' + post.username + '<p> </li> '
+    //         )
+    //     })
+    // })
+    // .then(function(htmlArray){
+    //     
+    //     var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
+    //     var end = '</ul> </div>'
+    //     var string = beginning + htmlArray.join('') + end;
+    //     return string;
+    // })
+    // .then(function(postsHTML){
+      

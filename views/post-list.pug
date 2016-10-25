@@ -1,0 +1,8 @@
+div
+    h1 List of contents
+    ul
+        each val in posts
+            li 
+                h2 
+                    a(href= val.url)= val.title
+                p= "Created by " + val.username
