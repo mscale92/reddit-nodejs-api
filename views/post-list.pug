@@ -1,8 +1,14 @@
-div
-    h1 List of contents
-    ul
-        each val in posts
-            li 
-                h2 
-                    a(href= val.url)= val.title
-                p= "Created by " + val.username
+extends layout.pug
+
+block title
+    title The Posts in MRS
+
+block content
+    div#content
+        h1 List of contents
+        ul.contents-list
+            each val in posts
+                li.content-item 
+                    h2.content-item_title 
+                        a(href= val.url)= val.title
+                    p= "Created by " + val.username

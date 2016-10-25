@@ -7,6 +7,11 @@ const pug = require('pug');
 app.set('view engine', 'pug');
 //template
 
+
+app.use('/files', express.static('static_files'));
+//static files, like imgs and css
+
+
 // load the mysql library
 var mysql = require('mysql');
 
@@ -195,6 +200,8 @@ app.post(`/createContent`, function(req, res, next){
 
 
 
+
+
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
 
 // Boilerplate code to start up the web server
@@ -202,8 +209,13 @@ var server = app.listen(process.env.PORT, process.env.IP, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log("starting!", host, port);
 });
+
+
+
+
+//old code
 
     //  return postsFive.map(function(post){
             
