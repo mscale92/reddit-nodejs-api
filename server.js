@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send('Welcome to the Homepage');
 });
 
 
@@ -44,7 +44,9 @@ app.get('/hello', function(request, response){
             //query or the other
                 //if request.query.name exists, then use the query
                 //otherwise, use World
-            //This allows for multiple choices with the same function
+            //This allows for multiple choices with the same 
+        //Or use
+        // var rep = request.query.name || "World";
    response.send('<h1>Hello '+ rep +' !</h1>'); 
                             
    
@@ -70,6 +72,7 @@ app.get('/calculator/:operator', function(req, res){
             //make our strings into floating numbers, decimals
     req.params.firstNum = num1;
     req.params.secondNum = num2;
+        //show the numbers in our object
     
     if(op === "add"){
         req.params.ans = num1 + num2;
@@ -84,69 +87,36 @@ app.get('/calculator/:operator', function(req, res){
         req.params.ans = num1 / num2;
     }
     else{
-        res.sendStatus(405);
+        res.status(400).send("Please do a proper arithmetic operation")
     }
     
     res.send(req.params);
         //send the final object
 })
     //if else chain to determine the type of mathmatical operation
-    //if the input is not any of them, it returns a 405 error,
-        //Method not Allowed
+    //if the input is not any of them, it returns a 400 error as a status
+        //it also sends the user a little message
 
 
 //exercise 4
 
 app.get('/posts/', function(req, res, next){
-    
-    // if(req.params.id){
-    //     var id = parseInt(req.params.id);
-    //     var options = {
-    //     limit: 1,
-    //     offset: 0
-    //     }
-    //     return reddit.getPost(options, id)
-    //     .then(function(post){
-    //         console.log(post);
-    //         return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
-    //         + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
-    //         '<p> Created by ' + post.username + '<p> </li> '
-    //         );
-        
-    //     })
-    //     .then(function(htmlString){
-            
-    //         var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
-    //         var end = '</ul> </div>'
-    //         var string = beginning + htmlString + end;
-    //         return string;
-    //     })
-    //     .then(function(post){
-    //         res.send(post);
-    //     })
-    //     }
-    // else{
+        //We only get the latest five posts
         return reddit.getFive()
-        // .then(function(results){
-        //     return results;
-        // })
         .then(function(posts){
             console.log(posts);
             
             res.render('post-list', {posts: posts});
+                //replaces the old code by doing all the html
+                //templates in the pug file
             next();
-            // connection.end();
+            //don't end the connection between linked requests
         })
         .catch(function(err){
             console.log(err);
+            res.status(500).send("The Database is down, so sad");
             connection.end();
         })
-    
-    
-    // else{
-    //   res.sendStatus(405);
-    
-    // }
 })
 
 app.get('/posts/:id', function(req, res, next){
@@ -160,26 +130,11 @@ app.get('/posts/:id', function(req, res, next){
             var posts = [post];
         res.render('post-list', {posts: posts});
         //rendering is nifty!
-        
-        //     console.log(post);
-        //     return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
-        //     + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
-        //     '<p> Created by ' + post.username + '<p> </li> '
-        //     );
-        
-        // })
-        // .then(function(htmlString){
-            
-        //     var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
-        //     var end = '</ul> </div>'
-        //     var string = beginning + htmlString + end;
-        //     return string;
-        // })
-        // .then(function(post){
-        //     res.send(post);
+     
         })
         .catch(function(err){
             console.log(err);
+            res.status(500).send("The Database is down, so sad");
             connection.end();
         })
         
