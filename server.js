@@ -93,8 +93,36 @@ app.get('/calculator/:operator', function(req, res){
 
 //exercise 4
 
-app.get('/posts', function(req, res){
+app.get('/posts/:id', function(req, res){
     
+    if(req.params.id){
+        var id = parseInt(req.params.id);
+        var options = {
+        limit: 1,
+        offset: 0
+        }
+        return reddit.getPost(options, id)
+        .then(function(post){
+            console.log(post);
+            return ('<li class = "content-item"> ' + '<h2 class="' + post.title + '"> '
+            + '<a href="' + post.url + '">' + post.title + '</a> </h2> ' +
+            '<p> Created by ' + post.username + '<p> </li> '
+            );
+        
+        })
+        .then(function(htmlString){
+            
+            var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
+            var end = '</ul> </div>'
+            var string = beginning + htmlString + end;
+            return string;
+        })
+        .then(function(post){
+            res.send(post);
+        })
+        }
+    
+    else{
     return reddit.getFive()
     .then(function(postsFive){
         return postsFive.map(function(post){
@@ -106,7 +134,7 @@ app.get('/posts', function(req, res){
         })
     })
     .then(function(htmlArray){
-        console.log(htmlArray)
+        // console.log(htmlArray)
         var beginning = '<div id="contents"> <h1>List of contents</h1> <ul class="contents-list"> ';
         var end = '</ul> </div>'
         var string = beginning + htmlArray.join('') + end;
@@ -122,7 +150,7 @@ app.get('/posts', function(req, res){
         connection.end();
     })
     
-    
+    }
 })
 
 /* <div id="contents">
@@ -168,15 +196,18 @@ app.post(`/createContent`, function(req, res, next){
     
     return reddit.createPost(post)
     .then(function(results){
-        console.log(results);
         
-        res.send("yo");
-        connection.end()
+        var red = "/posts/" + results.id
+        
+        
+        res.redirect(red);
+        
     })
     
 })
 //retrieve the data from the form by having the same path
     //just a post instead of a get and some req.body middleware
+
 
 
 
