@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser')
     //parse our form data
 
-const pug = require('pug');
+// const pug = require('pug');
 app.set('view engine', 'pug');
 //template
 
