@@ -1,18 +1,21 @@
 // Dependencies
 var express = require('express');
 var bodyParser = require('body-parser');
-// var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 // var morgan = require('morgan');
 
 var app = express();
   //set this anything, it is a variable for express
 
-// Specify the usage of the Pug template engine
+
 app.set('view engine', 'pug');
+// Specify the usage of the Pug template engine 
 
 app.use('/files', express.static('static_files'));
 //static files, like imgs and css
 
+app.use(cookieParser())
+//cookie parser for our users to stay logged on
 
 
 // Middleware
@@ -108,21 +111,41 @@ app.get('/', function(req, res) {
   //Login!
 app.get('/login', function(req, res, next) {
   res.render('login');
-  next();
+  // next();
 });
 
 app.post('/login', function(req, res) {
   return reddit.checkLogin(req.body)
   .then(function(result){
-    console.log(result);
+    console.log("userId" ,result);
     
     if(result === "passDNE" || result === "userDNE"){
       res.redirect('/login/fail')
     }
     else{
-      res.redirect("/")
+      return reddit.createSession(result)
+      .then(function(token){
+        
+        res.cookie('SESSION', token);
+        //Session our token cookie from out createSession formula
+        
+        // console.log(token);
+        
+//HERE!!! YOU'RE HERE        
+        return res.redirect("/");
+        //redirect users to the homepage
+      })
+      .catch(function(err){
+        res.status(500).send('an error occurred. please try again later!');
+        console.log(err);
+      });
+      
     }
   })
+  .catch(function(err){
+    res.status(401).send(err.message);
+    console.log(err);
+  });
   // code to login a user
   // hint: you'll have to use response.cookie here
 });
@@ -139,7 +162,7 @@ app.get('/login/fail', function(req, res, next){
   //Signup!
 app.get('/signup', function(req, res, next) {
   res.render('signup');
-  next();
+  // next();
 });
   //grab our html for the signup page, render it with pug and express
 
@@ -170,7 +193,7 @@ app.get('/signup/try-again', function(req, res, next){
   
   return res.render('userTaken');
 })
-
+  //if the signup fails, username already taken, try again!
 
 
   //Vote!

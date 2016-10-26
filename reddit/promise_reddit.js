@@ -2,6 +2,9 @@ var bcrypt = require('bcrypt');
 var HASH_ROUNDS = 10;
 //bcrypt mod
 
+var secureRandom = require('secure-random');
+// this function creates a big random string
+
 function queryPromise(query, columns, connect){
   return(
        new Promise(function(resolve, reject){
@@ -37,9 +40,36 @@ function comparePassProm(pass, actualHashedPassword){
 }
 
 
+function createSessionToken(){
+  return (
+      secureRandom.randomArray(100).map(function(code){
+        return code.toString(36);
+      }).join('')
+      );
+}
+    //makes a random string that we use as a cookie token
+
+
 function getPromise(connect){
 
   return {
+    
+
+    createSession: function(userId){
+      var token = createSessionToken();
+      return queryPromise('INSERT INTO sessions SET userId = ?, token = ?'
+      ,[userId, token] ,connect)
+      .then(function(results){
+        console.log("token inserted successfully" ,results);
+        return token;
+        //since token is a variable in the scope of our
+          //createSession function we can access it here
+      })
+      .catch(function(err){
+        console.log(err);
+      });
+    },
+    
     
     checkLogin: function(usernameAndPass){
       return queryPromise('select * from users where username = ?;' 
@@ -57,24 +87,37 @@ function getPromise(connect){
             //with the password
             
             return comparePassProm(usernameAndPass.password, user.password)
+            .then(function(result){
+              //results will be a boolean, true
+                //if it is false, it will sent to the catch
+                //and be undefined
+              if(result === true){
+                return user.id
+                //we need the user.id for cookies, so we return it here
+                //as our value
+              }
+              else{
+                return undefined;
+                //if somehow an error happens, return undefined
+                  //for it will be caught as an error
+              }
+            })
             //use our compare password promise to see if the entered password
               //and the saved hashed password are the same.
         }
       })
       .then(function(results){
-        //results will be a boolean, true
-          //if it is false, it will sent to the catch
-          //and be undefined
-        return results;
+        //our results should be our userId
+        
+        
+          return results;
+        
       })
       .catch(function(err){
         if(err === "passDNE"){
           console.log("Incorrect Password");
           return err;
         }
-        // else if(err === "passDNE"){
-          
-        // }
         else{
           console.log(err);
         }

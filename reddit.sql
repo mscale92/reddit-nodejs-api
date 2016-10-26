@@ -59,3 +59,9 @@ create table comments (id int primary key auto_increment
 ,userId int ,foreign key (userId) references users (id) 
 ,postId int ,foreign key (postId) references posts (id) 
 ,parentId int default null);
+
+
+-- This creates a sessions table for storing cookie tokens
+create table sessions (id int primary key auto_increment 
+,userId varchar(255) 
+,token varchar(255) unique key);
