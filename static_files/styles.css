@@ -5,6 +5,8 @@ progress,sub,sup{vertical-align:baseline;}button,hr,input{overflow:visible;}html
 html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*Above, just my basic settings to ensure that everything runs smoothly across all browsers along with clearfix*/
 
+/*General Settings*/
+
 li{
     list-style: none;
 }
@@ -28,10 +30,22 @@ body .content-item p {
     font-style: italic;
 }
 
+/*Specifics*/
+
 body #footer p{
     margin: 0;
     font-size: 1.2em;
     font-weight: bold;
     font-style: italic;
     padding: 50px 0px 0px 0px;
+}
+
+body .content-item .scores p{
+    margin: 0.4em 0;
+    font-style: normal;
+    font-weight: bold;
+}
+
+body .form .input{
+    padding: 0.5em 0em;
 }

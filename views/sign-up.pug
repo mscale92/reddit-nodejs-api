@@ -1,0 +1,17 @@
+extends layout.pug
+
+block title
+    title Sign Up
+
+block content
+    div.form
+        h2 Sign Up!
+        form(action="/signup" method="POST")
+        div.input
+            <input type="text" name="username" placeholder="Enter a Username">
+        
+        div.input
+            <input type="password" name="password" placeholder="Create a Password">
+        
+        button.btn.btn-primary(type='submit') Sign up
+        

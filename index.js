@@ -53,9 +53,33 @@ app.get('/', function(req, res) {
   Your job here will be to use the RedditAPI.getAllPosts function to grab the real list of posts.
   For now, we are simulating this with a fake array of posts!
   */
+  var sorting = "";
   
+  
+  switch (req.query.sort){
+    case "top":
+      sorting = "top";
+      break;
+      
+    case "hotness":
+      sorting = "hot";
+      break;
+      
+    case "newest":
+      sorting = "newest";
+      break;
+      
+    case "controversial":
+      sorting = "contro";
+      break;
+    
+    default:
+      sorting = "hot";
+  }
+  
+  console.log(sorting);
   //We only get the latest five posts
-        return reddit.getFive()
+        return reddit.getAllPosts({numPerPage: 5, page: 0, sortingMethod: sorting})
         .then(function(posts){
             console.log(posts);
             
@@ -77,7 +101,7 @@ app.get('/', function(req, res) {
   */
   
 });
-//You are here, don't do posts today! Wait for more info on that tomorrow
+
 
 
 
@@ -90,8 +114,9 @@ app.post('/login', function(request, response) {
   // hint: you'll have to use response.cookie here
 });
 
-app.get('/signup', function(request, response) {
-  // code to display signup form
+
+app.get('/signup', function(req, res) {
+  res.render('sign-up');
 });
 
 app.post('/signup', function(request, response) {
