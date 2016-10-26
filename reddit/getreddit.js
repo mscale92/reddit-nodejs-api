@@ -60,6 +60,18 @@ var subName = {
 
 //functions ahoy!
 
+function makeAUser(username, pass){
+    reddit.createUser({
+        username: username,
+        password: pass
+    })
+    .then(function(freshUser){
+        console.log(freshUser);
+        connection.end();
+    })
+}
+
+
 function makeAUserandPost(username, pass){
     reddit.createUser({
         username: username,
@@ -208,7 +220,7 @@ function showComments(postId){
     });
 }
 
-showComments(8);
+// showComments(8);
 
 // makeComment(myComment);
 
@@ -224,4 +236,4 @@ showComments(8);
 
 // makeAPost(11, 5);
 
-// makeAUserandPost("Beast", "yyy");
+makeAUser("mary5", "yyy");

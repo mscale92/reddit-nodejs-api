@@ -39,12 +39,13 @@ function getPromise(connect){
       )
       .then(function(hashedPassword){
         // console.log("blue1")
-        return queryPromise('INSERT INTO users (username,password, createdAt) VALUES (?, ?, ?)', 
+        
+        return queryPromise('INSERT INTO users (username, password, createdAt) VALUES (?, ?, ?)', 
         [user.username, hashedPassword, new Date()], connect)
       })
       .then(function(result){
         // console.log("green1");
-        return queryPromise('SELECT id, username, createdAt, updatedAt FROM users WHERE id = ?', 
+        return queryPromise('SELECT id, username, createdAt, password, updatedAt FROM users WHERE id = ?', 
         [result.insertId], connect)
       })
       .then(function(result){
@@ -54,6 +55,7 @@ function getPromise(connect){
       .catch(function(err){
         if(err.code === 'ER_DUP_ENTRY'){
           console.log('A user with this username already exists');
+          return "taken";
         }
         else{
           console.log(err, "there was an error");

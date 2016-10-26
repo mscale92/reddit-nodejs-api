@@ -104,7 +104,7 @@ app.get('/', function(req, res) {
 
 
 
-
+  //Login!
 app.get('/login', function(request, response) {
   // code to display login form
 });
@@ -115,15 +115,48 @@ app.post('/login', function(request, response) {
 });
 
 
-app.get('/signup', function(req, res) {
-  res.render('sign-up');
+
+//You are HERE!!!!!!!!!!!!
+
+  //Signup!
+app.get('/signup', function(req, res, next) {
+  res.render('signup');
+  next();
+});
+  //grab our html for the signup page, render it with pug and express
+
+app.post('/signup', function(req, res) {
+  
+  
+  return reddit.createUser(req.body)
+  .then(function(freshUser){
+    
+    
+    if(freshUser === "taken"){
+      return res.redirect('/signup/try-again')
+    }
+    //if the name is taken, go to the signup taken page
+    else{
+      return res.redirect('/');
+    }
+    
+  })
+  .catch(function(err){
+    console.log(err);
+    connection.end();
+  })
+  // hint: you'll have to use bcrypt to hash the user's password
 });
 
-app.post('/signup', function(request, response) {
-  // code to signup a user
-  // ihnt: you'll have to use bcrypt to hash the user's password
-});
+app.get('/signup/:try-again', function(req, res, next){
+  
+  return res.render('userTaken');
+  next();
+})
 
+
+
+  //Vote!
 app.post('/vote', function(request, response) {
   // code to add an up or down vote for a content+user combination
 });

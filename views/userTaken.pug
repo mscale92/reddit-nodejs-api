@@ -1,0 +1,14 @@
+extends layout.pug
+
+block title
+    title Sign Up Again
+
+block content
+    div.form
+        h2 Oops, that username is already taken. Please try a different one!
+        form(action="/signup" method="POST")
+            div.input
+                input(type="text" name="username" placeholder="Enter a Username")
+            div.input
+                input(type="password" name="password" placeholder="Create a Password")
+            button(type='submit') Sign up
