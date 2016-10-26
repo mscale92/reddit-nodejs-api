@@ -20,9 +20,66 @@ function queryPromise(query, columns, connect){
     
 }
 
+function comparePassProm(pass, actualHashedPassword){
+  return(
+    new Promise(function(resolve, reject){
+      bcrypt.compare(pass, actualHashedPassword, function(err, result){
+        if(result === true){
+          resolve(result);
+        }
+        else{
+          console.log(err);
+          reject("passDNE");
+        }
+      })
+    })
+  )
+}
+
 
 function getPromise(connect){
+
   return {
+    
+    checkLogin: function(usernameAndPass){
+      return queryPromise('select * from users where username = ?;' 
+      ,[usernameAndPass.username], connect)
+      .then(function(result){
+        if(result.length === 0){
+          return "userDNE";
+          //if the length is zero then it does not exist
+        }
+        else{
+          var user = result[0];
+          //grab our user object from our array, it's the only value
+         
+            //compare the hashedPassword stored in our database
+            //with the password
+            
+            return comparePassProm(usernameAndPass.password, user.password)
+            //use our compare password promise to see if the entered password
+              //and the saved hashed password are the same.
+        }
+      })
+      .then(function(results){
+        //results will be a boolean, true
+          //if it is false, it will sent to the catch
+          //and be undefined
+        return results;
+      })
+      .catch(function(err){
+        if(err === "passDNE"){
+          console.log("Incorrect Password");
+          return err;
+        }
+        // else if(err === "passDNE"){
+          
+        // }
+        else{
+          console.log(err);
+        }
+      });
+    },
     
     createUser: function(user){
       return(

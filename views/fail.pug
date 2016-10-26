@@ -1,0 +1,14 @@
+extends layout.pug
+
+block title
+    title Login Failed
+
+block content
+    div.form
+        h2 Uh oh, the password or username that you entered is incorrect. Please try again.
+        form(action="/login/" method="POST")
+            div.input
+                input(type="text" name="username" placeholder="Enter a Username")
+            div.input
+                input(type="password" name="password" placeholder="Create a Password")
+            button(type='submit') Log In

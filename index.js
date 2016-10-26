@@ -103,20 +103,38 @@ app.get('/', function(req, res) {
 });
 
 
+//You are HERE!!!!!!!!!!!!
 
   //Login!
-app.get('/login', function(request, response) {
-  // code to display login form
+app.get('/login', function(req, res, next) {
+  res.render('login');
+  next();
 });
 
-app.post('/login', function(request, response) {
+app.post('/login', function(req, res) {
+  return reddit.checkLogin(req.body)
+  .then(function(result){
+    console.log(result);
+    
+    if(result === "passDNE" || result === "userDNE"){
+      res.redirect('/login/fail')
+    }
+    else{
+      res.redirect("/")
+    }
+  })
   // code to login a user
   // hint: you'll have to use response.cookie here
 });
+//retrieve login info
+
+app.get('/login/fail', function(req, res, next){
+  return res.render('fail');
+});
+//if the password is incorrect
 
 
 
-//You are HERE!!!!!!!!!!!!
 
   //Signup!
 app.get('/signup', function(req, res, next) {
@@ -148,10 +166,9 @@ app.post('/signup', function(req, res) {
   // hint: you'll have to use bcrypt to hash the user's password
 });
 
-app.get('/signup/:try-again', function(req, res, next){
+app.get('/signup/try-again', function(req, res, next){
   
   return res.render('userTaken');
-  next();
 })
 
 

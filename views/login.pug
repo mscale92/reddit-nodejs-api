@@ -1,0 +1,14 @@
+extends layout.pug
+
+block title
+    title Login
+
+block content
+    div.form
+        h2 Enter your username and password to log in!
+        form(action="/login" method="POST")
+            div.input
+                input(type="text" name="username" placeholder="Enter a Username")
+            div.input
+                input(type="password" name="password" placeholder="Create a Password")
+            button(type='submit') Log In
