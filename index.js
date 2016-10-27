@@ -214,7 +214,27 @@ app.post('/signup', function(req, res) {
     }
     //if the name is taken, go to the signup taken page
     else{
-      return res.redirect('/');
+      return reddit.createSession(freshUser.id)
+      .then(function(token){
+      //after creating a user, have them log in!
+        res.cookie('SESSION', token);
+        //This assigns the string SESSION to our token value
+          //The cookie function in express sends the cookie
+          //to the user
+            //in order to check to see if the cookie is there
+            //user req.cookie, just like req.params
+        
+        // console.log(token);
+        
+        
+        return res.redirect("/");
+        //redirect users to the homepage
+      })
+      .catch(function(err){
+        res.status(500).send('an error occurred. please try again later!');
+        console.log(err);
+      });
+      // return res.redirect('/');
     }
     
   })
