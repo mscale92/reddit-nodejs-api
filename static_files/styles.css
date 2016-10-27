@@ -49,3 +49,33 @@ body .content-item .scores p{
 body .form .input{
     padding: 0.5em 0em;
 }
+
+body header nav .list-nav-links{
+    width: 100%;
+    padding: 0px;
+    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+body header nav ul .nav-link{
+    
+    width: 33%;
+    text-align: center;
+}
+
+body header nav ul .nav-link a{
+    display: block;
+    padding: 4vh;
+    /*color: blue;*/
+}
+
+body header nav ul .nav-link:hover{
+    background: #A0C5E8;
+}
+
+body header nav ul .nav-link a:hover{
+    color: #673ab7;
+}

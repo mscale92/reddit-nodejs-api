@@ -46,11 +46,43 @@ var connection = mysql.createConnection({
 var reddit = require('./reddit/promise_reddit')(connection);
 
 
+
+function checkLoginToken(req, res, next){
+  if(req.cookies.SESSION){
+    return reddit.getUserFromSession(req.cookies.SESSION)
+    .then(function(result){
+      
+      if(result !== false){
+        console.log('red', result);
+        req.loggedInUser = result[0];
+          //result is an array
+        next();
+      }
+      else{
+        next();
+      }
+    })
+  }
+  else{
+    next();
+  }
+}
+//This takes the token, if it's there, from the cookie object
+  //given to the user, found in req.cookie under the key SESSION
+
+app.use(checkLoginToken);
+  //use the checkLoginToken to see if the user is logged in
+    //this runs the function every time we have a request
+    //it sets the req.loggedInUser, a homemade object, to the
+      //result, if it is present
+    //otherwise, next!
+
+
 //End of express middleware and mods
 
 // Resources
 
-//HERE!!!!!!!!!!!!!!
+
 app.get('/', function(req, res) {
   /*
   Your job here will be to use the RedditAPI.getAllPosts function to grab the real list of posts.
@@ -77,7 +109,7 @@ app.get('/', function(req, res) {
       break;
     
     default:
-      sorting = "hot";
+      sorting = "p.createdAt";
   }
   
   console.log(sorting);
@@ -106,7 +138,7 @@ app.get('/', function(req, res) {
 });
 
 
-//You are HERE!!!!!!!!!!!!
+
 
   //Login!
 app.get('/login', function(req, res, next) {
@@ -127,11 +159,15 @@ app.post('/login', function(req, res) {
       .then(function(token){
         
         res.cookie('SESSION', token);
-        //Session our token cookie from out createSession formula
+        //This assigns the string SESSION to our token value
+          //The cookie function in express sends the cookie
+          //to the user
+            //in order to check to see if the cookie is there
+            //user req.cookie, just like req.params
         
         // console.log(token);
         
-//HERE!!! YOU'RE HERE        
+        
         return res.redirect("/");
         //redirect users to the homepage
       })
@@ -189,17 +225,71 @@ app.post('/signup', function(req, res) {
   // hint: you'll have to use bcrypt to hash the user's password
 });
 
-app.get('/signup/try-again', function(req, res, next){
+app.get('/signup/try-again', function(req, res){
   
   return res.render('userTaken');
 })
   //if the signup fails, username already taken, try again!
 
 
+
+//here!
+app.get('/createPost', function(req, res){
+  res.render('createPost');
+})
+
+app.post('/createPost', function(req, res) {
+  // before creating content, check if the user is logged in
+  
+  console.log("green");
+  
+  if (!req.loggedInUser) {
+    // HTTP status code 401 means Unauthorized
+    res.status(401).render("denied");
+    // res.render("denied");
+  }
+  else {
+    var user = req.loggedInUser;
+      //make our object look pretty
+    
+    // here we have a logged in user, let's create the post with the user!
+    return reddit.createPost({
+      title: req.body.title,
+      url: req.body.url,
+      userId: user.userId,
+      sub: req.body.sub
+    })
+    .then(function(result){
+      console.log(result);
+      res.redirect("/post/success");
+    })
+  }
+})
+
+app.get("/post/success", function(req, res){
+  res.render("postSuccess");
+})
+
+
+
+
   //Vote!
 app.post('/vote', function(request, response) {
   // code to add an up or down vote for a content+user combination
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Listen

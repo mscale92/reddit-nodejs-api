@@ -1,0 +1,15 @@
+extends layout.pug
+
+block title
+    title Post Created!
+
+block scripts
+    link(rel="stylesheet", href="/files/styles.css")
+    script(src="/files/timeout.js")
+
+block content
+    div('timedRedirect()')
+        h2 Congratulations!
+        p Your post was successful.
+        p Please wait to be redirected.
+        

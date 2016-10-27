@@ -54,6 +54,24 @@ function getPromise(connect){
 
   return {
     
+    getUserFromSession: function(token){
+      return queryPromise('select * from sessions where token = ?'
+      ,[token] ,connect)
+      .then(function(result){
+        
+        
+        if(result.length === 0){
+          return false;
+        }
+        else{
+          return result;
+        }
+      })
+      .catch(function(err){
+        console.log(err, "token not there");
+      })
+    },
+    //takes the login token and checks to see if the user is logged in
 
     createSession: function(userId){
       var token = createSessionToken();
@@ -97,9 +115,7 @@ function getPromise(connect){
                 //as our value
               }
               else{
-                return undefined;
-                //if somehow an error happens, return undefined
-                  //for it will be caught as an error
+                new Error('uh oh, something went wrong')
               }
             })
             //use our compare password promise to see if the entered password
@@ -169,10 +185,10 @@ function getPromise(connect){
       return(
         queryPromise(`INSERT INTO posts 
         (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)`, 
-        [post.userId, post.title, post.url, new Date(), post.subredditId], connect)
+        [post.userId, post.title, post.url, new Date(), post.sub], connect)
         .then(function(result){
           return queryPromise(`SELECT 
-          p.id,title,url,userId, p.createdAt, p.updatedAt
+          p.id ,title ,url ,userId ,p.createdAt ,p.updatedAt
           ,subredditId ,name ,description
           FROM posts p
           Join subreddits s on (p.subredditId = s.id)
