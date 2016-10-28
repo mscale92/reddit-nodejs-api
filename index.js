@@ -84,10 +84,6 @@ app.use(checkLoginToken);
 
 
 app.get('/', function(req, res) {
-  /*
-  Your job here will be to use the RedditAPI.getAllPosts function to grab the real list of posts.
-  For now, we are simulating this with a fake array of posts!
-  */
   var sorting = "";
   // console.log(req.query);
   
@@ -97,22 +93,23 @@ app.get('/', function(req, res) {
       break;
       
     case "hotness":
-      sorting = "hot";
+      sorting = "hotness";
       break;
       
     case "newest":
       sorting = "newest";
       break;
       
-    case "controversial":
-      sorting = "contro";
+    case "controversial" || "controversial?":
+      sorting = "controversial";
       break;
     
     default:
       sorting = "hot";
   }
   
-  console.log("Sorted by: " ,sorting);
+  
+  console.log(req.query.sort)
 
   var offset = 0;
   var limit = 5;
@@ -125,7 +122,9 @@ app.get('/', function(req, res) {
   
     return reddit.getAllPosts({numPerPage: limit, page: offset, sortingMethod: sorting})
     .then(function(posts){
+        // var category = req.query.sort; 
         
+        var sort = [{sort: sorting}];
         var prev = [{page: offset-1}];
         var next = [{page: offset+1}];
         var title = [{name: 'Page ' + offset}];
@@ -133,8 +132,8 @@ app.get('/', function(req, res) {
         
         if(offset === 0){
           prev = [{page: offset}];
-          title = [{name: 'Homepage'}]
-          head = [{name: 'Welcome to the Homepage!'}]
+          title = [{name: 'Homepage'}];
+          head = [{name: 'Welcome to the Homepage!'}];
         }
           //can't have negative offsets now can we?
         else if(posts.length < limit){
@@ -146,7 +145,8 @@ app.get('/', function(req, res) {
         next: next,
         prev: prev,
         title: title,
-        head: head
+        head: head,
+        sort: sort
         });
             //replaces the old code by doing all the html
             //templates in the pug file

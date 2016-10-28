@@ -13,7 +13,7 @@ body{
 
 body header{
     width: 100%;
-    position: fixed;
+    position: absolute;
     background: lightblue;
 }
 
@@ -30,8 +30,12 @@ a:hover{
 	color: #A7BD8E;
 }
 
+body .wrapper{
+    
+}
+
 body #content{
-    margin: 0em 4em;
+    margin-left: 4em;
     padding-top: 20vh;
 }
 
@@ -46,6 +50,9 @@ body .redirected{
     margin: 0em 4em;
 }
 
+body #footer{
+    display: inline-block;
+}
 
 body #footer p{
     margin: 0;
@@ -68,6 +75,8 @@ body .form .input{
     padding: 0.5em 0em;
 }
 
+
+/*nav and header*/
 body header nav .list-nav-links{
     width: 100%;
     padding: 0px;
@@ -97,4 +106,40 @@ body header nav ul .nav-link:hover{
 
 body header nav ul .nav-link a:hover{
     color: #673ab7;
+}
+
+
+/*sortnav*/
+body .sortnav-container {
+    float: right;
+    text-align: right;
+}
+
+body .sortnav-container .sort{
+    border: 2px solid lightblue;
+    background: lightblue;
+    max-width: 120px;
+}
+
+body .sortnav-container .sort a{
+    display: block;
+    padding: 2vh 0;
+    min-width: 100px;
+}
+
+body .sortnav-container .sort:hover{
+    background: #A0C5E8;
+}
+
+body .sortnav-container .sort a:hover{
+    color: #673ab7;
+}
+
+
+/*next page buttons*/
+
+.nextPage a{
+    padding-right: 4vh;
+    /*display: inline-block;*/
+    float: left;
 }

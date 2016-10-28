@@ -257,10 +257,10 @@ function getPromise(connect){
         else if(sorting === "newest"){
           sorting = "v.createdAt";
         }
-        else if(sorting === "hot"){
+        else if(sorting === "hotness"){
           sorting = "sum(vote)/unix_timestamp(v.createdAt)"
         }
-        else if(sorting === "contro"){
+        else if(sorting === "controversial"){
           sorting = `CASE
           when sum(case when vote = 1 then 1 else 0 end) < sum(case when vote = -1 then 1 else 0 end)
             then count(vote) * (sum(case when vote = 1 then 1 else 0 end) / sum(case when vote = -1 then 1 else 0 end))
