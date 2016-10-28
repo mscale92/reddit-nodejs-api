@@ -62,8 +62,8 @@ function getPromise(connect){
 
   return {
     
-    logout: function(){
-      return queryPromise('delete from sessions', [], connect)
+    logout: function(token){
+      return queryPromise('delete from sessions where token=?', [token], connect)
       .then(function(result){
         console.log("cookies deleted!", result);
         return result;

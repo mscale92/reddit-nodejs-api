@@ -326,7 +326,8 @@ app.get("/post/success", function(req, res){
 
 
 app.get("/logout", function(req, res){
-  return reddit.logout()
+  console.log(req.body);
+  return reddit.logout(req.cookies.SESSION)
   .then(function(result){
     res.clearCookie('SESSION');
     res.render('logout')
