@@ -7,6 +7,20 @@ html
     block scripts
         link(rel="stylesheet", href="/files/styles.css")
   body
+    block header
+      header
+        nav
+            ul.list-nav-links
+                li.nav-link
+                    a(href="/login") Login
+                li.nav-link
+                    a(href="/createPost") Create Post
+                li.nav-link
+                    a(href="/signup") Signup
+                li.nav-link
+                    a(href="/logout") Logout
+                li.nav-link
+                    a(href="/") Homepage
     block content
     block foot
       #footer

@@ -51,9 +51,9 @@ function checkLoginToken(req, res, next){
   if(req.cookies.SESSION){
     return reddit.getUserFromSession(req.cookies.SESSION)
     .then(function(result){
-      
+      // console.log(result, "pink");
       if(result !== false){
-        console.log('red', result);
+        // console.log('red', result);
         req.loggedInUser = result[0];
           //result is an array
         next();
@@ -89,7 +89,7 @@ app.get('/', function(req, res) {
   For now, we are simulating this with a fake array of posts!
   */
   var sorting = "";
-  
+  // console.log(req.query);
   
   switch (req.query.sort){
     case "top":
@@ -109,30 +109,59 @@ app.get('/', function(req, res) {
       break;
     
     default:
-      sorting = "p.createdAt";
+      sorting = "hot";
   }
   
-  console.log(sorting);
+  console.log("Sorted by: " ,sorting);
+
+  var offset = 0;
+  var limit = 5;
   //We only get the latest five posts
-        return reddit.getAllPosts({numPerPage: 5, page: 0, sortingMethod: sorting})
-        .then(function(posts){
-            console.log(posts);
-            
-            res.render('post-list', {posts: posts});
-                //replaces the old code by doing all the html
-                //templates in the pug file
-            
-            //don't end the connection between linked requests
-        })
-        .catch(function(err){
-            console.log(err);
-            res.status(500).send("The Database is down, so sad");
-            connection.end();
-        })
+  
+  if(req.query.page){
+    offset = parseInt(req.query.page);
+  }
+    //queries are fussy, no strings for ints
+  
+    return reddit.getAllPosts({numPerPage: limit, page: offset, sortingMethod: sorting})
+    .then(function(posts){
+        
+        var prev = [{page: offset-1}];
+        var next = [{page: offset+1}];
+        var title = [{name: 'Page ' + offset}];
+        var head = title;
+        
+        if(offset === 0){
+          prev = [{page: offset}];
+          title = [{name: 'Homepage'}]
+          head = [{name: 'Welcome to the Homepage!'}]
+        }
+          //can't have negative offsets now can we?
+        else if(posts.length < limit){
+          next = [{page: 0}];
+        }
+          //our last page's next just returns us to the homepage
+          
+        res.render('homepage', {posts: posts,
+        next: next,
+        prev: prev,
+        title: title,
+        head: head
+        });
+            //replaces the old code by doing all the html
+            //templates in the pug file
+        
+        //don't end the connection between linked requests
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send("The Database is down, so sad");
+        connection.end();
+    })
 
   /*
   Response.render will call the Pug module to render your final HTML.
-  Check the file views/post-list.pug as well as the README.md to find out more!
+  Check the file views/homepage.pug as well as the README.md to find out more!
   */
   
 });
@@ -163,7 +192,7 @@ app.post('/login', function(req, res) {
           //The cookie function in express sends the cookie
           //to the user
             //in order to check to see if the cookie is there
-            //user req.cookie, just like req.params
+            //use req.cookie, just like req.params
         
         // console.log(token);
         
@@ -253,7 +282,7 @@ app.get('/signup/try-again', function(req, res){
 
 
 
-//here!
+
 app.get('/createPost', function(req, res){
   res.render('createPost');
 })
@@ -261,7 +290,7 @@ app.get('/createPost', function(req, res){
 app.post('/createPost', function(req, res) {
   // before creating content, check if the user is logged in
   
-  console.log("green");
+  
   
   if (!req.loggedInUser) {
     // HTTP status code 401 means Unauthorized
@@ -283,19 +312,56 @@ app.post('/createPost', function(req, res) {
       console.log(result);
       res.redirect("/post/success");
     })
+    .catch(function(err){
+      res.status(500).send('an error occurred. please try again later!');
+      console.log(err);
+    });
   }
-})
+});
 
 app.get("/post/success", function(req, res){
   res.render("postSuccess");
+});
+
+
+
+app.get("/logout", function(req, res){
+  return reddit.logout()
+  .then(function(result){
+    res.clearCookie('SESSION');
+    res.render('logout')
+  })
+  .catch(function(err){
+    res.status(500).send('an error occurred. please try again later!');
+    console.log(err);
+  });
+  
 })
+//Log the users out, clears the cookies so that new users can log in
+  //and the old users can safely close their session
+
 
 
 
 
   //Vote!
-app.post('/vote', function(request, response) {
+app.post('/vote', function(req, res) {
   // code to add an up or down vote for a content+user combination
+  if (!req.loggedInUser) {
+    // HTTP status code 401 means Unauthorized
+    res.status(401).render("denied");
+    
+  }
+  else {
+    console.log(req.body);
+    return reddit.createOrUpdateVote(req.body)
+    .then(function(result){
+      console.log(result);
+      res.redirect('/');
+    })
+    
+      
+  }
 });
 
 

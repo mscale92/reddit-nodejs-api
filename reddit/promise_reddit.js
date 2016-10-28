@@ -50,9 +50,25 @@ function createSessionToken(){
     //makes a random string that we use as a cookie token
 
 
+//comments global variables
+var currentLevel = 0; 
+var parents = [];
+var postsMap = {};
+var topLevelPosts = [];
+
+
+//exported object
 function getPromise(connect){
 
   return {
+    
+    logout: function(){
+      return queryPromise('delete from sessions', [], connect)
+      .then(function(result){
+        console.log("cookies deleted!", result);
+        return result;
+      })
+    },
     
     getUserFromSession: function(token){
       return queryPromise('select * from sessions where token = ?'
@@ -389,6 +405,7 @@ function getPromise(connect){
     //end of getAllSubreddits
     
     createOrUpdateVote: function(vote){
+      vote.vote = parseInt(vote.vote);
       if(vote.vote === 1 || vote.vote === 0 || vote.vote === -1){
          return queryPromise(`INSERT INTO votes 
          SET postId = ?, userId = ?, vote = ?, createdAt = ?
@@ -419,46 +436,149 @@ function getPromise(connect){
     },
     //end of createComment function
     
-    getCommentsforPost: function(postId){
-      return queryPromise(`select 
-            id, text, parentId, userId 
-            from comments 
-            where parentId is null 
-            order by id`, [postId], connect)
-      .then(function(results){
-      function thread(array){
-        return array.map(function(comment){
-          
-           
-            return queryPromise(`select 
-            id, text, parentId, userId 
-            from comments 
-            where parentId = ? 
-            order by id` 
-            ,[comment.id] ,connect)
-            .then(function(reply){
-              comment.replies = reply;
-              if(reply[0] === false){
-                return comment;
+    getComments: function(postId){
+      
+            function getCommentsForPost(postId, maxLevel, currentLevel, parents, postsMap, topLevelPosts){
+      
+                //Have several parameters for the callback so that the updated objects can replace the original values
+                  //for instance, current level will change as the comments become nested but remain
+                  //as zero for the first run
+              if (currentLevel === 0) {
+                return queryPromise('SELECT * FROM comments WHERE postId=? AND parentId IS NULL', [postId], connect)
+                  //take the postId from the parameter and find its first comment
+                  .then(function(posts) {
+                    //posts is an array of top comments, first comments, since 
+                      //their parentId is null at the desired post
+                    var parents = posts.map(post => post.id);
+                      //our parents array now holds all the ids for our
+                        //original comments, these are the parentIds for the
+                        //replies
+                    posts.forEach(post => {
+                        //post is the objects within the posts array
+                          //all that happens below will affect each
+                          //post object =>, arrow function
+                      post.replies = [];
+                        //make a key within the post object called replies
+                          //this should be an array so that it can use
+                          //methods later on
+                      postsMap[post.id] = post
+                        //add our post object to our postMap object
+                          //with a key name of the post.id,
+                            //the post.id being the id for the original comments
+                            //aka the parentId for replies in accordance to each
+                            //original comment
+                    });
+                      //Return within the .then, ie
+                      //run the recursive function
+                    return getCommentsForPost(postId, maxLevel, 1, parents, postsMap, posts);
+                      //constant values
+                        //postId, same post
+                        //maxLevel, same, three
+                      //updated values
+                        //current level is now 1, we're moving to the second level
+                          //like an array, position 1 is the second value
+                        //parents is now an array of parentIds, the ids from
+                          //the original comments
+                        //postsMap is now an object that holds our post object,
+                          //with the empty replies array
+                          //with each key being the id of our post object
+                            //the post object is our original, parentId null,
+                            //comments
+                        //topLevelPosts is now an array of objects where each
+                          //object is a top level, original, comment.
+                  });
               }
-              else{
-              thread(comment.replies);
-              //recursion happens here
-              return comment;
+              else if (currentLevel >= maxLevel || parents.length === 0) {
+                  //if they're aren't any comments, parents array is zero
+                    //or the maxLevel has been hit, in this case three
+            
+            
+                return topLevelPosts;
+                  //our topLevelPosts is our post object
+                    //returning it here causes all our reply posts
+                    //to nest, like a factorial multiplying values
+                      //together
               }
-            })
-        
-          
-        })
-        //end of map
-      }
+              else {
+                //if our current level is not zero, ie above zero
+            
+                parents = parents.map(id => parseInt(id));
+                   //take the ids of our parent comments in our parents array
+                    //and convert the strings into integers
+                    //queries are fussy about data types
+                      //can't have strings within strings
+                return queryPromise(`SELECT * FROM comments WHERE postId=? AND parentId IN (${parents.join(',')})`, [postId] ,connect)
+                  //in one fell swoop,
+                    //convert our parents array into a string
+                      //separated by commas
+                    //that our query will use to find all
+                    //of the replies,
+                        //IN refers to looking for something
+                        //that has the desired values
+                          //ie
+                          //where the parentId is
+                          //any of these values
+            
+                  .then(function(posts) {
+                    
+                    //posts is an array of objects
+                      //where each object is a reply to
+                      //a top level comment
+                    var parents = posts.map(post => post.id);
+                      //make our current replies the new
+                        //values for our parents array
+                    
+                      posts.forEach(post => {
+                        
+                        post.replies = [];
+                          //give our reply comment a replies array
+                        postsMap[post.id] = post;
+                        
+                        postsMap[post.parentId].color = "green";
+                        
+                        postsMap[post.parentId].replies.push(post);
+                          //this affects our topLevelPosts
+                            //because our topLevelPosts is the
+                            //original post
+                              //when it is returned,
+                              //all values are put together
+                      });
+                    
+                      
+                        //put our reply comment into our object
+                // postsMap[post.parentId].replies.push(post);
+                        //since our comment is itself a reply,
+                          //push it into the replies array of its
+                          //parent by calling upon the key of the
+                          //same name, the parentId of reply = id of original comment
+                    var reply = topLevelPosts[0].replies
+            console.log(reply[1], "blue");
+                    return getCommentsForPost(postId, maxLevel, currentLevel + 1, parents, postsMap, topLevelPosts);
+                      //static values
+                        //postId, always the same post
+                        //maxLevel, must remain at a constant three
+                          //to avoid an infinite loop
+                      //updated values
+                        //currentLevel is now one more than before, + 1
+                        //parents is now an array of reply ids,
+                          //they can be parents too
+                        //postsMap now has the replies with key values
+                          //as their id number
+                          //as well as the replies existing within
+                          //the replies array of their parent
+                        //topLevelPosts
+                          //this 
+                  });
+              }
+      
+            }
+            //end of getCommentsForPost function
       
       
-      return Promise.all(thread(results));
-      })
+      
+      return getCommentsForPost(postId, 3, 0, parents, postsMap, topLevelPosts)
       .then(function(results){
-        results = JSON.stringify(results, null, 4)
-        return results;
+        return
       })
     },
     
@@ -478,7 +598,130 @@ function getPromise(connect){
   //end of return
 }
 
+function getCommentsForPost(postId, maxLevel, currentLevel, parents, postsMap, topLevelPosts){
 
+          //Have several parameters for the callback so that the updated objects can replace the original values
+            //for instance, current level will change as the comments become nested but remain
+            //as zero for the first run
+        if (currentLevel === 0) {
+          return queryPromise('SELECT * FROM comments WHERE postId=? AND parentId IS NULL', [postId], connect)
+            //take the postId from the parameter and find its first comment
+            .then(function(posts) {
+              //posts is an array of top comments, first comments, since 
+                //their parentId is null at the desired post
+              var parents = posts.map(post => post.id);
+                //our parents array now holds all the ids for our
+                  //original comments, these are the parentIds for the
+                  //replies
+              posts.forEach(post => {
+                  //post is the objects within the posts array
+                post.replies = [];
+                  //make a key within the post object called replies
+                    //this should be an array so that it can use
+                    //methods later on
+                postsMap[post.id] = post
+                  //add our post object to our postMap object
+                    //with a key name of the post.id,
+                      //the post.id being the id for the original comments
+                      //aka the parentId for replies in accordance to each
+                      //original comment
+              });
+                //Return within the .then, ie
+                //run the recursive function
+              return getCommentsForPost(postId, maxLevel, 1, parents, postsMap, posts);
+                //constant values
+                  //postId, same post
+                  //maxLevel, same, three
+                //updated values
+                  //current level is now 1, we're moving to the second level
+                    //like an array, position 1 is the second value
+                  //parents is now an array of parentIds, the ids from
+                    //the original comments
+                  //postsMap is now an object that holds our post object,
+                    //with the empty replies array
+                    //with each key being the id of our post object
+                      //the post object is our original, parentId null,
+                      //comments
+                  //topLevelPosts is now an array of objects where each
+                    //object is a top level, original, comment.
+            });
+        }
+        else if (currentLevel >= maxLevel || parents.length === 0) {
+            //if they're aren't any comments, parents array is zero
+              //or the maxLevel has been hit, in this case three
+      
+      //QUESTION!
+          return topLevelPosts;
+            //why do we return this?
+            //shouldn't we return the postsMap object since it holds
+              //all of the objects and replies arrays?
+        }
+        else {
+          //if our current level is not zero, ie above zero
+      
+          parents = parents.map(id => parseInt(id));
+             //take the ids of our parent comments in our parents array
+              //and convert the strings into integers
+              //queries are fussy about data types
+                //can't have strings within strings
+          return queryPromise(`SELECT * FROM comments WHERE postId=? AND parentId IN (${parents.join(',')})`, [postId] ,connect)
+            //in one fell swoop,
+              //convert our parents array into a string
+                //separated by commas
+              //that our query will use to find all
+              //of the replies,
+                  //IN refers to looking for something
+                  //that has the desired values
+                    //ie
+                    //where the parentId is
+                    //any of these values
+      
+            .then(function(posts) {
+              //posts is an array of objects
+                //where each object is a reply to
+                //a top level comment
+              var parents = posts.map(post => post.id);
+                //make our current replies the new
+                  //values for our parents array
+              posts.forEach(post => {
+                post.replies = [];
+                  //give our reply comment a replies array
+                postsMap[post.id] = post;
+                  //put our reply comment into our object
+                    //we cannot easily add replies to
+                    //an array of replies, that would
+                      //take some more conditions
+                    //SO make sure to add it so
+                      //that all replies to this reply
+                      //have a place to easily go
+                postsMap[post.parentId].replies.push(post);
+                  //since our comment is itself a reply,
+                    //push it into the replies array of its
+                    //parent by calling upon the key of the
+                    //same name, the parentId of reply = id of original comment
+              });
+      
+              return getCommentsForPost(postId, maxLevel, currentLevel + 1, parents, postsMap, topLevelPosts);
+                //static values
+                  //postId, always the same post
+                  //maxLevel, must remain at a constant three
+                    //to avoid an infinite loop
+                  //topLevelPosts
+                    //this only contains the top level, original
+                    //comments, so it stays the same
+                //updated values
+                  //currentLevel is now one more than before, + 1
+                  //parents is now an array of reply ids,
+                    //they can be parents too
+                  //postsMap now has the replies with key values
+                    //as their id number
+                    //as well as the replies existing within
+                    //the replies array of their parent
+            });
+        }
+
+      }
+      //end of getCommentsForPost function
 
 
 

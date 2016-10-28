@@ -209,7 +209,7 @@ function makeComment(comment){
 }
 
 function showComments(postId){
-    return reddit.getCommentsforPost(postId)
+    return reddit.getComments(postId)
     .then(function(results){
         console.log(results);
         connection.end();
@@ -220,7 +220,7 @@ function showComments(postId){
     });
 }
 
-// showComments(8);
+showComments(8);
 
 // makeComment(myComment);
 
@@ -236,4 +236,4 @@ function showComments(postId){
 
 // makeAPost(11, 5);
 
-makeAUser("mary5", "yyy");
+// makeAUser("mary5", "yyy");

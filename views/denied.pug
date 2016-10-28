@@ -1,10 +1,10 @@
-extends layout.pug
+extends postSuccess.pug
 
 block title
     title Access Denied
 
 block content
-    div.form
-        h2 Sorry, you must be logged in to create content!
-        a(href="/") 
-            button Return to Homepage
+    div.redirected
+        h2 Sorry 
+        p You must be logged in to create content or vote on posts!
+        p Please wait to be redirected.

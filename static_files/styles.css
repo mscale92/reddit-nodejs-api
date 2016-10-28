@@ -7,6 +7,16 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 
 /*General Settings*/
 
+body{
+    background: cornsilk;
+}
+
+body header{
+    width: 100%;
+    position: fixed;
+    background: lightblue;
+}
+
 li{
     list-style: none;
 }
@@ -20,9 +30,9 @@ a:hover{
 	color: #A7BD8E;
 }
 
-body{
-    background: cornsilk;
-    margin: 0px 50px;
+body #content{
+    margin: 0em 4em;
+    padding-top: 20vh;
 }
 
 body .content-item p {
@@ -30,15 +40,23 @@ body .content-item p {
     font-style: italic;
 }
 
-/*Specifics*/
+
+body .redirected{
+    padding-top: 10vh;
+    margin: 0em 4em;
+}
+
 
 body #footer p{
     margin: 0;
     font-size: 1.2em;
     font-weight: bold;
     font-style: italic;
-    padding: 50px 0px 0px 0px;
+    padding: 15vh 1vh 2vh 1vh;
 }
+
+
+/*Specifics*/
 
 body .content-item .scores p{
     margin: 0.4em 0;
@@ -53,6 +71,7 @@ body .form .input{
 body header nav .list-nav-links{
     width: 100%;
     padding: 0px;
+    margin: 0;
     
     display: flex;
     flex-flow: row wrap;
@@ -61,8 +80,8 @@ body header nav .list-nav-links{
 }
 
 body header nav ul .nav-link{
-    
-    width: 33%;
+    padding: 2vh 0;
+    width: 20%;
     text-align: center;
 }
 
