@@ -5,13 +5,14 @@ block title
 
 block content
     div#content
-        div.form
-            h2 Sign Up!
-            form(action="/signup" method="POST")
-                div.input
-                    input(type="text" name="username" placeholder="Enter a Username")
-                div.input
-                    input(type="password" name="password" placeholder="Create a Password")
-                button(type='submit') Sign up
-
-            
+        .create
+            div.form
+                h2 Sign Up!
+                form(action="/signup" method="POST")
+                    div.input
+                        input(type="text" name="username" placeholder="Enter a Username")
+                    div.input
+                        input(type="password" name="password" placeholder="Create a Password")
+                    button(type='submit') Sign up
+    
+                

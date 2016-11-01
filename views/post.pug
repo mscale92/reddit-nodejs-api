@@ -1,0 +1,28 @@
+extends layout.pug
+
+block title
+    title Post
+
+block content
+    #content
+        div.post-content
+            each val in post
+                div.author-title
+                    h1= val.title
+                    p= "Written by: " + val.username
+                    
+                div.text
+                    p= val.content
+                div.comments
+                    .parent
+                        each val in parent
+                            p= val.text
+                            
+                            .replies-1
+                                each v in reply1
+                                    if v.parentId === val.id
+                                        p= v.text
+                                        .replies-2
+                                            each rep in reply2
+                                                if rep.parentId === v.id
+                                                    p= rep.text

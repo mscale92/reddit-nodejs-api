@@ -123,7 +123,7 @@ app.get('/', function(req, res) {
     return reddit.getAllPosts({numPerPage: limit, page: offset, sortingMethod: sorting})
     .then(function(posts){
         // var category = req.query.sort; 
-        
+        console.log(posts);
         var sort = [{sort: sorting}];
         var prev = [{page: offset-1}];
         var next = [{page: offset+1}];
@@ -167,6 +167,60 @@ app.get('/', function(req, res) {
 });
 
 
+  //Get single post!
+
+app.get('/post', function(req, res){
+  var postId = req.query.post;
+  
+  var options = {};
+  
+  return reddit.getPost(postId)
+  .then(function(result){
+    
+    var post = result;
+    return reddit.getComments(postId)
+    .then(function(parent){
+      
+      
+      var reply1= [];
+      parent.filter(function(rep){
+        if(rep.replies.length > 0){
+          
+          reply1 = rep.replies.map(function(rep){
+            return rep;
+          })
+        }
+      })
+      
+      
+      
+     
+      
+      var reply2 = [];
+      
+      reply1.filter(function(reply){
+        if(reply.replies.length > 0){
+          reply2 = reply.replies.map(function(rep){
+            return rep;
+          })
+        }
+      })
+      
+      console.log(reply2)
+      
+      res.render("post", {post: post,
+      parent: parent,
+      reply1: reply1,
+      reply2: reply2
+      })
+    })
+    .catch(function(err){
+      console.log(err);
+        res.status(500).send("The Database is down, so sad");
+        connection.end();
+    })
+  })
+})
 
 
   //Login!
@@ -306,7 +360,8 @@ app.post('/createPost', function(req, res) {
       title: req.body.title,
       url: req.body.url,
       userId: user.userId,
-      sub: req.body.sub
+      sub: req.body.sub,
+      content: req.body.content
     })
     .then(function(result){
       console.log(result);

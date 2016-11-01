@@ -5,141 +5,237 @@ progress,sub,sup{vertical-align:baseline;}button,hr,input{overflow:visible;}html
 html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*Above, just my basic settings to ensure that everything runs smoothly across all browsers along with clearfix*/
 
+
 /*General Settings*/
 
-body{
-    background: cornsilk;
-}
-
-body header{
-    width: 100%;
-    position: absolute;
-    background: lightblue;
-}
-
-li{
-    list-style: none;
-}
-
-a{
-    color: green;
-    text-decoration: none;
-}
-
-a:hover{
-	color: #A7BD8E;
-}
-
-body .wrapper{
+    body{
+        background: cornsilk;
+    }
     
-}
+     header{
+        width: 100%;
+        position: absolute;
+        background: lightblue;
+    }
+    
+    li{
+        list-style: none;
+    }
+    
+    a{
+        color: green;
+        text-decoration: none;
+    }
+    
+    a:hover{
+    	color: #A7BD8E;
+    }
+    
+    .wrapper{
+        
+    }
 
-body #content{
-    margin-left: 4em;
-    padding-top: 20vh;
-}
+     #content{
+        /*margin-left: 4em;*/
+        padding-top: 20vh;
+    }
 
-body .content-item p {
-    margin-left: 10px;
-    font-style: italic;
-}
-
-
-body .redirected{
-    padding-top: 10vh;
-    margin: 0em 4em;
-}
-
-body #footer{
-    display: inline-block;
-}
-
-body #footer p{
-    margin: 0;
-    font-size: 1.2em;
-    font-weight: bold;
-    font-style: italic;
-    padding: 15vh 1vh 2vh 1vh;
-}
+     .content-item p {
+        margin-left: 10px;
+        font-style: italic;
+    }
+        /*content-item referes to each li, or post*/
+    
+    
+     .redirected{
+        padding-top: 10vh;
+        margin: 0em 4em;
+    }
+        /*redirected refers to the banner
+        on the redirected pages, since they don't
+        have posts*/
+        
+     #footer{
+        display: inline-block;
+    }
+    
+     #footer p{
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: bold;
+        font-style: italic;
+        padding: 15vh 1vh 2vh 1vh;
+    }
+        /*footer is the footer*/
 
 
 /*Specifics*/
-
-body .content-item .scores p{
-    margin: 0.4em 0;
-    font-style: normal;
-    font-weight: bold;
-}
-
-body .form .input{
-    padding: 0.5em 0em;
-}
-
-
-/*nav and header*/
-body header nav .list-nav-links{
-    width: 100%;
-    padding: 0px;
-    margin: 0;
     
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-body header nav ul .nav-link{
-    padding: 2vh 0;
-    width: 20%;
-    text-align: center;
-}
-
-body header nav ul .nav-link a{
-    display: block;
-    padding: 4vh;
-    /*color: blue;*/
-}
-
-body header nav ul .nav-link:hover{
-    background: #A0C5E8;
-}
-
-body header nav ul .nav-link a:hover{
-    color: #673ab7;
-}
+     .content-item .scores p{
+        margin: 0.4em 0;
+        font-style: normal;
+        font-weight: bold;
+    }
+        /*scores is a div that containers the
+        vote forms, ie the up and down votes*/
+        
+     form input,
+     form button{
+        margin: 0.5em 0em;
+    }
+        /*gives all form inputs and buttons 
+        some margins*/
 
 
-/*sortnav*/
-body .sortnav-container {
-    float: right;
-    text-align: right;
-}
+/*nav inside header*/
 
-body .sortnav-container .sort{
-    border: 2px solid lightblue;
-    background: lightblue;
-    max-width: 120px;
-}
+     nav .list-nav-links{
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    
+     nav ul .nav-link{
+        padding: 2vh 0;
+        width: 20%;
+        text-align: center;
+    }
+    
+     nav ul .nav-link a{
+        display: block;
+        padding: 4vh;
+        /*color: blue;*/
+    }
+    
+     nav ul .nav-link:hover{
+        background: #A0C5E8;
+    }
+    
+     nav ul .nav-link a:hover{
+        color: #673ab7;
+    }
 
-body .sortnav-container .sort a{
-    display: block;
-    padding: 2vh 0;
-    min-width: 100px;
-}
 
-body .sortnav-container .sort:hover{
-    background: #A0C5E8;
-}
+/*banner*/
 
-body .sortnav-container .sort a:hover{
-    color: #673ab7;
-}
+    .banner{
+        /*background: blue;*/
+        padding: 1em
+    }
+    
+    
+    /*greeting*/
+        
+        .greeting{
+            float: left;
+            width: 35%;
+            margin: 0;
+            height: 80px;
+            /*background: pink;*/
+            padding: 0 1em;
+            text-align: center;
+        }
+        
+    
+    /*sortnav*/
+         .sortnav-container {
+            width: 65%;
+            float: left;
+            height: 80px;
+            /*text-align: right;*/
+        }
+        
+        .sortnav-container .sortnav{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: inherit;
+            
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+         .sortnav-container .sort{
+            /*width: 25%;*/
+            /*float: left;*/
+            border: 2px solid lightblue;
+            background: lightblue;
+            text-align: center;
+            
+        }
+        
+         .sortnav-container .sort a{
+             /*width: 20%;*/
+            display: block;
+            padding: 2vh 0;
+            min-width: 100px;
+            
+        }
+        
+         .sortnav-container .sort:hover{
+            background: #A0C5E8;
+        }
+        
+         .sortnav-container .sort a:hover{
+            color: #673ab7;
+        }
+
+
+/*Post*/
+    .post-content{
+        margin-left: 4em
+    }
+    
+    .author-title p{
+        font-style: italic;
+    }
+    
+    .post-content .text{
+        margin: 2em 0 0 1em;
+        width: 60%;
+        background: white;
+        border: 2px solid lightblue;
+    }
+    
+    .replies-1{
+        margin-left: 2em;
+    }
+    
+    .replies-2{
+        margin-left: 4em;
+    }
+
 
 
 /*next page buttons*/
 
-.nextPage a{
-    padding-right: 4vh;
-    /*display: inline-block;*/
-    float: left;
-}
+    .nextPage{
+        display: flex;
+        justify-content: center;
+    }
+    
+    .nextPage a{
+        
+        padding-right: 4vh;
+        /*display: inline-block;*/
+        float: left;
+    }
+    
+/*create posts, login, and signup*/
+  .create{
+      margin-left: 4em;
+  }
+  
+    
+/*redirected pages*/
+    .redirected{
+        margin-left: 4em;
+    }
+    

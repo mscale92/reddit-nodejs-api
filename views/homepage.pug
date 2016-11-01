@@ -6,43 +6,45 @@ block title
 
 block content
     div#content
-        div.sortnav-container
-            ul.sortnav
-                li.sort
-                    a(href='/?sort=hotness') Hot!
-                li.sort
-                    a(href='/?sort=top') Top
-                li.sort
-                    a(href='/?sort=newest') Newest
-                li.sort
-                    a(href='/?sort=controversial') Controversial
-        div.wrapper
-            each val in head
-                h1= val.name
-                ul.contents-list
-                    each val in posts
-                        li.content-item 
-                            h2.content-item_title 
-                                a(href= val.url)= val.title
-                            p= "Created by " + val.user.username
-                            .scores
-                                p Score: #{val.voteScore}
-                                p Upvotes: #{val.up} 
-                                p Downvotes: #{val.down}
-                            form(action='/vote', method='post')
-                                input(type='hidden', name='vote', value='1')
-                                input(type='hidden', name='postId', value= val.id)
-                                input(type='hidden', name='userId', value= val.user.id)
-                                button(type='submit') upvote this
-                            form(action='/vote', method='post')
-                                input(type='hidden', name='vote', value='-1')
-                                input(type='hidden', name='postId', value= val.id)
-                                input(type='hidden', name='userId', value= val.user.id)
-                                button(type='submit') downvote this
-                each cat in sort
-                    div.nextPage
-                        each val in prev
-                            a(href= "?sort=" + cat.sort + "&page=" + val.page) Previous
-                        p
-                        each val in next
-                            a(href= "?sort=" + cat.sort + "&page=" + val.page) Next
+        div.banner.clearfix
+            div.greeting
+                each val in head
+                    h1= val.name
+            div.sortnav-container.clearfix
+                ul.sortnav.clearfix
+                    li.sort
+                        a(href='/?sort=hotness') Hot!
+                    li.sort
+                        a(href='/?sort=top') Top
+                    li.sort
+                        a(href='/?sort=newest') Newest
+                    li.sort
+                        a(href='/?sort=controversial') Controversial
+        div.wrapper.clearfix
+            ul.contents-list
+                each val in posts
+                    li.content-item 
+                        h2.content-item_title 
+                            a(href= '/post/?post=' + val.id)= val.title
+                        p= "Created by " + val.user.username
+                        .scores
+                            p Score: #{val.voteScore}
+                            p Upvotes: #{val.up} 
+                            p Downvotes: #{val.down}
+                        form(action='/vote', method='post')
+                            input(type='hidden', name='vote', value='1')
+                            input(type='hidden', name='postId', value= val.id)
+                            input(type='hidden', name='userId', value= val.user.id)
+                            button(type='submit') upvote this
+                        form(action='/vote', method='post')
+                            input(type='hidden', name='vote', value='-1')
+                            input(type='hidden', name='postId', value= val.id)
+                            input(type='hidden', name='userId', value= val.user.id)
+                            button(type='submit') downvote this
+            each cat in sort
+                div.nextPage
+                    each val in prev
+                        a(href= "?sort=" + cat.sort + "&page=" + val.page) Previous
+                    p
+                    each val in next
+                        a(href= "?sort=" + cat.sort + "&page=" + val.page) Next

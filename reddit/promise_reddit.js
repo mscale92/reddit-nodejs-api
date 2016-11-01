@@ -200,11 +200,11 @@ function getPromise(connect){
     createPost: function(post){
       return(
         queryPromise(`INSERT INTO posts 
-        (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)`, 
-        [post.userId, post.title, post.url, new Date(), post.sub], connect)
+        (userId, title, url, createdAt, subredditId, content) VALUES (?, ?, ?, ?, ?, ?)`, 
+        [post.userId, post.title, post.url, new Date(), post.sub, post.content], connect)
         .then(function(result){
           return queryPromise(`SELECT 
-          p.id ,title ,url ,userId ,p.createdAt ,p.updatedAt
+          p.id ,title ,url ,userId ,p.createdAt ,p.updatedAt ,content
           ,subredditId ,name ,description
           FROM posts p
           Join subreddits s on (p.subredditId = s.id)
@@ -219,23 +219,23 @@ function getPromise(connect){
     },
     //end of createPost promise function
     
-    getPost: function(options, postId){
-      if(options === false){
-        options = {};
-      }
+    getPost: function(postId){
+      // if(options === false){
+      //   options = {};
+      // }
       
-      var limit = options.numPerPage || 25; // if options.numPerPage is "falsy" then use 25
-      var offset = (options.page || 0) * limit;
+      // var limit = options.numPerPage || 25; 
+      // var offset = (options.page || 0) * limit;
       
       return queryPromise(`select 
-        p.id ,title ,url ,p.createdAt ,p.updatedAt ,username ,userId
+        p.id ,title ,url ,p.createdAt ,p.updatedAt ,username ,userId ,content
         from posts p 
         join users u on (u.id = p.userId)  
         where p. id = ?
         LIMIT ? OFFSET ?`, 
-        [postId, limit, offset], connect)
+        [postId, 1, 0], connect)
         .then(function(postResult){
-          return postResult[0];
+          return postResult;
         })
     },
     //end of getPost function
@@ -277,7 +277,7 @@ function getPromise(connect){
         
       return queryPromise(`
       SELECT 
-      p.id as id, title, url, p.userId, p.createdAt, p.updatedAt
+      p.id as id, title, url, p.userId, p.createdAt, p.updatedAt ,content
       ,sum(vote) as voteScore
       ,sum(case when vote = 1 then 1 else 0 end) as up
       ,sum(case when vote = -1 then 1 else 0 end) as down
@@ -552,7 +552,7 @@ function getPromise(connect){
                           //parent by calling upon the key of the
                           //same name, the parentId of reply = id of original comment
                     var reply = topLevelPosts[0].replies
-            console.log(reply[1], "blue");
+            // console.log(reply[1], "blue");
                     return getCommentsForPost(postId, maxLevel, currentLevel + 1, parents, postsMap, topLevelPosts);
                       //static values
                         //postId, always the same post
@@ -578,7 +578,7 @@ function getPromise(connect){
       
       return getCommentsForPost(postId, 3, 0, parents, postsMap, topLevelPosts)
       .then(function(results){
-        return
+        return results;
       })
     },
     
