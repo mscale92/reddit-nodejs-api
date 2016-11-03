@@ -6,16 +6,15 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*Above, just my basic settings to ensure that everything runs smoothly across all browsers along with clearfix*/
 
 
+
 /*General Settings*/
 
     body{
         background: cornsilk;
     }
     
-     header{
-        width: 100%;
-        position: absolute;
-        background: lightblue;
+    header{
+        background: lavender;
     }
     
     li{
@@ -31,86 +30,74 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     	color: #A7BD8E;
     }
     
-    .wrapper{
-        
-    }
-
-     #content{
-        /*margin-left: 4em;*/
-        padding-top: 20vh;
-    }
-
-     .content-item p {
-        margin-left: 10px;
-        font-style: italic;
-    }
-        /*content-item referes to each li, or post*/
-    
-    
-     .redirected{
-        padding-top: 10vh;
-        margin: 0em 4em;
-    }
-        /*redirected refers to the banner
-        on the redirected pages, since they don't
-        have posts*/
-        
-     #footer{
-        display: inline-block;
-    }
-    
-     #footer p{
+     footer p{
         margin: 0;
         font-size: 1.2em;
         font-weight: bold;
         font-style: italic;
         padding: 15vh 1vh 2vh 1vh;
     }
-        /*footer is the footer*/
+
+    content{
+        display: flex;
+        width: 100%;
+        flex-flow: column;
+    }
+    
+    
 
 
 /*Specifics*/
     
-     .content-item .scores p{
-        margin: 0.4em 0;
-        font-style: normal;
-        font-weight: bold;
-    }
+/*     .content-item .scores p{*/
+/*        margin: 0.4em 0;*/
+/*        font-style: normal;*/
+/*        font-weight: bold;*/
+/*    }*/
         /*scores is a div that containers the
         vote forms, ie the up and down votes*/
         
-     form input,
-     form button{
-        margin: 0.5em 0em;
-    }
+/*     form input,*/
+/*     form button{*/
+/*        margin: 0.5em 0em;*/
+/*    }*/
         /*gives all form inputs and buttons 
         some margins*/
 
 
 /*nav inside header*/
 
-     nav .list-nav-links{
+     nav ul.list-nav-links{
         width: 100%;
+        
         padding: 0;
         margin: 0;
         
         display: flex;
-        flex-flow: row wrap;
-        justify-content: flex-end;
+        flex-flow: column wrap;
+        justify-content: center;
         align-items: center;
     }
     
-     nav ul .nav-link{
-        padding: 2vh 0;
-        width: 20%;
+     nav ul li.nav-link{
+        
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
     }
     
-     nav ul .nav-link a{
-        display: block;
-        padding: 4vh;
-        /*color: blue;*/
+     nav ul .nav-link div{
+        padding: 2em 0;
+        
     }
+    
+        nav ul .nav-link a{
+            width: 100%;
+            height: 100%;
+        }
+    
     
      nav ul .nav-link:hover{
         background: #A0C5E8;
@@ -121,89 +108,108 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     }
 
 
-/*banner*/
+/*banner section*/
 
     .banner{
-        /*background: blue;*/
-        padding: 1em
+        
+        padding: 2em 0;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
     }
     
     
     /*greeting*/
         
         .greeting{
-            float: left;
-            width: 35%;
+            
             margin: 0;
-            height: 80px;
-            /*background: pink;*/
             padding: 0 1em;
             text-align: center;
         }
         
-    
-    /*sortnav*/
-         .sortnav-container {
-            width: 65%;
-            float: left;
-            height: 80px;
-            /*text-align: right;*/
+        .greeting h1{
+            margin: 0;
         }
         
-        .sortnav-container .sortnav{
+    
+    /*sort nav*/
+        
+        
+        .banner nav ul.sort-list{
             margin: 0;
             padding: 0;
             width: 100%;
-            height: inherit;
+            min-height: 20vh;
             
-            display: flex;
-            flex-flow: row wrap;
+            flex-flow: column;
             justify-content: space-around;
             align-items: center;
         }
         
-         .sortnav-container .sort{
-            /*width: 25%;*/
-            /*float: left;*/
-            border: 2px solid lightblue;
-            background: lightblue;
+         .sort-list li{
+            border: 2px solid lavender;
+            background: lavender;
             text-align: center;
+            margin-top: 1em;
             
         }
         
-         .sortnav-container .sort a{
-             /*width: 20%;*/
+         .sort-list li a{
+             
             display: block;
             padding: 2vh 0;
-            min-width: 100px;
+            min-width: 5rem;
             
         }
         
-         .sortnav-container .sort:hover{
+         .sort-list li:hover{
             background: #A0C5E8;
         }
         
-         .sortnav-container .sort a:hover{
-            color: #673ab7;
+         .sort-list a:hover{
+            color: red;
         }
 
 
-/*Post*/
-    .post-content{
-        margin-left: 4em
+/*wrapper section, where posts live*/
+
+    .wrapper{
+        display: flex;
+        flex-flow: column;
+    }
+
+    
+    ul.list-posts{
+        padding: 0;
     }
     
-    .author-title p{
-        font-style: italic;
-    }
     
-    .post-content .text{
-        margin: 2em 0 0 1em;
-        width: 60%;
-        background: white;
-        border: 2px solid lightblue;
-    }
+        ul.list-posts li{
+            background: white;
+            border: 2px solid lightblue;
+            margin: 2em 0;
+            
+            display: flex;
+            flex-flow: column;
+        }
+        
+        ul.list-posts li div.row{
+            margin: 0;
+        }
+        
+        ul.list-posts li h2{
+            align-self: center;
+        }
+            /*make our post titles centered*/
+        
+            .author{
+                text-align: center;
+                font-style: italic;
+            }
     
+    
+    /*comments*/
     .replies-1{
         margin-left: 2em;
     }
@@ -238,4 +244,232 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     .redirected{
         margin-left: 4em;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  /*Grid CSS media queries Below!*/
+  
+    /* Grid system! */
+.row {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex; /* This will allow our row to display columns horizontally */
+    flex-wrap: wrap; /* This will become necessary to allow our flex boxes to stack in responsive mode */
+}
+
+
+
+/* Small and up columns */
+
+/* If an element needs all twelve columns, then its width is 100%. Easy. */
+.col-small-12 {
+    width: 100%;
+}
+/* If an element needs 11 of 12 columns, its width is 11/12 * 100% */
+.col-small-11 {
+    width: 91.666%;
+}
+.col-small-10 {
+    width: 83.333%;
+}
+.col-small-9 {
+    width: 75%;
+}
+.col-small-8 {
+    width: 66.666%;
+}
+.col-small-7 {
+    width: 58.333%;
+}
+/* This is the class we'd use if we want two 50/50 elements next to each other */
+.col-small-6 {
+    width: 50%;
+}
+.col-small-5 {
+    width: 41.666%;
+}
+/* This is the class we'd use if we want three elements next to each other */
+.col-small-4 {
+    width: 33.333%;
+}
+/* This is the class we'd use if we want four elements next to each other */
+.col-small-3 {
+    width: 25%;
+}
+.col-small-2 {
+    width: 16.666%;
+}
+/* We'll almost NEVER use this */
+.col-small-1 {
+    width: 8.333%;
+}
+
+/* Medium and up screen sizes */
+@media only screen and (min-width: 641px) {
+  .col-medium-12 {
+      width: 100%;
+  }
+  /* If an element needs 11 of 12 columns, its width is 11/12 * 100% */
+  .col-medium-11 {
+      width: 91.666%;
+  }
+  .col-medium-10 {
+      width: 83.333%;
+  }
+  .col-medium-9 {
+      width: 75%;
+  }
+  .col-medium-8 {
+      width: 66.666%;
+  }
+  .col-medium-7 {
+      width: 58.333%;
+  }
+  /* This is the class we'd use if we want two 50/50 elements next to each other */
+  .col-medium-6 {
+      width: 50%;
+  }
+  .col-medium-5 {
+      width: 41.666%;
+  }
+  /* This is the class we'd use if we want three elements next to each other */
+  .col-medium-4 {
+      width: 33.333%;
+  }
+  /* This is the class we'd use if we want four elements next to each other */
+  .col-medium-3 {
+      width: 25%;
+  }
+  .col-medium-2 {
+      width: 16.666%;
+  }
+  /* We'll almost NEVER use this */
+  .col-medium-1 {
+      width: 8.333%;
+  }
+
+}
+/*end of medium*/
+
+
+
+/* Large screen sizes */
+@media only screen and (min-width: 1025px) {
+  .col-large-12 {
+      width: 100%;
+  }
+  /* If an element needs 11 of 12 columns, its width is 11/12 * 100% */
+  .col-large-11 {
+      width: 91.666%;
+  }
+  .col-large-10 {
+      width: 83.333%;
+  }
+  .col-large-9 {
+      width: 75%;
+  }
+  .col-large-8 {
+      width: 66.666%;
+  }
+  .col-large-7 {
+      width: 58.333%;
+  }
+  /* This is the class we'd use if we want two 50/50 elements next to each other */
+  .col-large-6 {
+      width: 50%;
+  }
+  .col-large-5 {
+      width: 41.666%;
+  }
+  /* This is the class we'd use if we want three elements next to each other */
+  .col-large-4 {
+      width: 33.333%;
+  }
+  /* This is the class we'd use if we want four elements next to each other */
+  .col-large-3 {
+      width: 25%;
+  }
+  .col-large-2 {
+      width: 16.666%;
+  }
+  /* We'll almost NEVER use this */
+  .col-large-1 {
+      width: 8.333%;
+  }
+
+}
+/*end of large*/
+
+
+
+
+/*Personal Media Queries below!*/
+    
+    
+        /*medium and up*/
+    @media only screen and (min-width: 641px){
+        
+        /*all sections*/
+        section{
+            margin-left: 5em;
+        }
+        
+        
+        /*nav*/
+        .banner nav ul.sort-list{
+            flex-flow: row;
+        }
+        
+        ul.list-nav-links li{
+            width: 20%;
+
+        }
+        
+        ul.list-nav-links li a{
+            height: 100%;
+            width: 100%;
+        }
+        
+        ul.list-nav-links li div{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        
+        /*sort nav*/
+        
+        .banner{
+            flex-flow: row;
+        }
+        
+        ul.sort-list{
+            flex-flow: row wrap
+        }
+        
+        ul.sort-list li{
+            margin-top: 0;
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
