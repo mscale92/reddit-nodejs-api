@@ -4,8 +4,8 @@ block title
     title Post
 
 block content
-    #content
-        div.post-content
+    content
+        article.post-content
             each val in post
                 div.author-title
                     h1= val.title
@@ -13,7 +13,7 @@ block content
                     
                 div.text
                     p= val.content
-                div.comments
+                article.comments
                     .parent
                         each val in parent
                             p= val.text

@@ -4,15 +4,10 @@ block title
     title Sign Up
 
 block content
-    div#content
-        .create
-            div.form
-                h2 Sign Up!
-                form(action="/signup" method="POST")
-                    div.input
-                        input(type="text" name="username" placeholder="Enter a Username")
-                    div.input
-                        input(type="password" name="password" placeholder="Create a Password")
-                    button(type='submit') Sign up
-    
-                
+    content
+        section.create.row
+            h2 Sign Up!
+            form(action="/signup" method="POST")
+                input(type="text" name="username" placeholder="Enter a Username")
+                input(type="password" name="password" placeholder="Create a Password")
+                button.col-small-4.col-medium-6(type='submit') Sign up

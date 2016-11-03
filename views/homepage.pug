@@ -23,7 +23,7 @@ block content
         section.wrapper
             ul.list-posts.row
                 each val in posts
-                    li.col-small-12 
+                    li.col-small-12.col-large-8 
                         h2
                             a(href= '/post/?post=' + val.id)= val.title
                         div.row
@@ -32,23 +32,26 @@ block content
                                 p Score: #{val.voteScore}
                                 p Upvotes: #{val.up} 
                                 p Downvotes: #{val.down}
-                        form(action='/vote', method='post')
-                            input(type='hidden', name='vote', value='1')
-                            input(type='hidden', name='postId', value= val.id)
-                            input(type='hidden', name='userId', value= val.user.id)
-                            button(type='submit') upvote this
-                        form(action='/vote', method='post')
-                            input(type='hidden', name='vote', value='-1')
-                            input(type='hidden', name='postId', value= val.id)
-                            input(type='hidden', name='userId', value= val.user.id)
-                            button(type='submit') downvote this
+                        div.row.votes
+                            form(action='/vote', method='post')
+                                input(type='hidden', name='vote', value='1')
+                                input(type='hidden', name='postId', value= val.id)
+                                input(type='hidden', name='userId', value= val.user.id)
+                                button(type='submit') upvote this
+                            form(action='/vote', method='post')
+                                input(type='hidden', name='vote', value='-1')
+                                input(type='hidden', name='postId', value= val.id)
+                                input(type='hidden', name='userId', value= val.user.id)
+                                button(type='submit') downvote this
             each cat in sort
                 nav.nextPage
                     ul.row
                         each val in prev
-                            li
-                                a(href= "?sort=" + cat.sort + "&page=" + val.page) Previous
+                            li.col-small-3
+                                a(href= "?sort=" + cat.sort + "&page=" + val.page) 
+                                    div Previous
                         
                         each val in next
-                            li
-                                a(href= "?sort=" + cat.sort + "&page=" + val.page) Next
+                            li.col-small-3
+                                a(href= "?sort=" + cat.sort + "&page=" + val.page) 
+                                    div Next

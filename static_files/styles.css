@@ -10,7 +10,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*General Settings*/
 
     body{
-        background: cornsilk;
+        background: lightslategrey;
     }
     
     header{
@@ -22,12 +22,20 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     }
     
     a{
-        color: green;
+        color: aliceblue;
         text-decoration: none;
     }
     
     a:hover{
-    	color: #A7BD8E;
+    	color: cornflowerblue;
+    }
+    
+    nav a{
+        color: cadetblue;
+    }
+    
+    nav a:hover{
+        color: aliceblue;
     }
     
      footer p{
@@ -44,25 +52,6 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         flex-flow: column;
     }
     
-    
-
-
-/*Specifics*/
-    
-/*     .content-item .scores p{*/
-/*        margin: 0.4em 0;*/
-/*        font-style: normal;*/
-/*        font-weight: bold;*/
-/*    }*/
-        /*scores is a div that containers the
-        vote forms, ie the up and down votes*/
-        
-/*     form input,*/
-/*     form button{*/
-/*        margin: 0.5em 0em;*/
-/*    }*/
-        /*gives all form inputs and buttons 
-        some margins*/
 
 
 /*nav inside header*/
@@ -103,9 +92,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         background: #A0C5E8;
     }
     
-     nav ul .nav-link a:hover{
-        color: #673ab7;
-    }
+     
 
 
 /*banner section*/
@@ -167,9 +154,6 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             background: #A0C5E8;
         }
         
-         .sort-list a:hover{
-            color: red;
-        }
 
 
 /*wrapper section, where posts live*/
@@ -186,7 +170,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     
     
         ul.list-posts li{
-            background: white;
+            background: lightsteelblue;
             border: 2px solid lightblue;
             margin: 2em 0;
             
@@ -207,7 +191,11 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
                 text-align: center;
                 font-style: italic;
             }
-    
+            
+            .votes{
+                align-self: center;
+                padding-bottom: 2em;
+            }
     
     /*comments*/
     .replies-1{
@@ -222,21 +210,52 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 
 /*next page buttons*/
 
-    .nextPage{
-        display: flex;
-        justify-content: center;
+    .nextPage ul{
+        padding: 0;
+        justify-content: space-around;
     }
     
-    .nextPage a{
+    .nextPage li{
+        border: 2px solid lightblue;
+        background: lavender;
         
-        padding-right: 4vh;
-        /*display: inline-block;*/
-        float: left;
     }
+    
+    nav.nextPage ul li:hover{
+        background: #A0C5E8;
+    }
+    
+    .nextPage ul li div{
+        padding: 0.5em;
+        min-width: 20%;
+        text-align: center;
+    }
+    
+    
     
 /*create posts, login, and signup*/
-  .create{
-      margin-left: 4em;
+  content .create{
+      padding-top: 3em;
+      height: 50vh;
+      
+      flex-flow: column;
+      margin: 0;
+      justify-content: center;
+      align-items: center;
+      
+      text-align: center;
+  }
+  
+  .create form{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+  }
+  
+  .create form input,
+  .create form button{
+      margin: .25em 0;
+      height: 3em;
   }
   
     
@@ -413,63 +432,91 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     
     
         /*medium and up*/
-    @media only screen and (min-width: 641px){
+@media only screen and (min-width: 641px){
         
         /*all sections*/
         section{
-            margin-left: 5em;
+            margin: 0 2.5em;
         }
         
         
-        /*nav*/
-        .banner nav ul.sort-list{
-            flex-flow: row;
-        }
+        /*header nav*/
         
-        ul.list-nav-links li{
-            width: 20%;
-
-        }
-        
-        ul.list-nav-links li a{
-            height: 100%;
-            width: 100%;
-        }
-        
-        ul.list-nav-links li div{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            header nav ul.list-nav-links,
+            .banner nav ul.sort-list{
+                flex-flow: row;
+            }
+            
+            ul.list-nav-links li{
+                width: 20%;
+    
+            }
+            
+            ul.list-nav-links li a{
+                height: 100%;
+                width: 100%;
+            }
+            
+            ul.list-nav-links li div{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         
         
         /*sort nav*/
         
-        .banner{
-            flex-flow: row;
-        }
-        
-        ul.sort-list{
-            flex-flow: row wrap
-        }
-        
-        ul.sort-list li{
-            margin-top: 0;
-        }
+            .banner{
+                flex-flow: row;
+            }
+            
+            ul.sort-list{
+                flex-flow: row wrap
+            }
+            
+            ul.sort-list li{
+                margin-top: 0;
+            }
         
         
     }
+/*end of medium personal*/
+
+
+    /*large and above! personal media queries*/
+@media only screen and (min-width: 1025px){ 
+    
+    /*wrapper section posts*/
+    
+        ul.list-posts li h2{
+            align-self: flex-start;
+            margin-left: 2em;
+        } 
+    
+    
+    /*Create post, login, and signup*/
+        
+        content .create{
+            margin-left: 5em;
+            align-items: flex-start;
+            text-align: start;
+        }
+        
+        content .create form{
+            flex-flow: column;
+            max-width: 300px;
+        }
+        
+        content .create input,
+        content .create button{
+            height: inherit;
+        }
     
     
     
     
     
-    
-    
-    
-    
-    
-    
-    
+}
+/*end of large personal*/

@@ -4,13 +4,10 @@ block title
     title Login
 
 block content
-    div#content
-        .create
-            div.form
-                h2 Enter your username and password to log in!
-                form(action="/login" method="POST")
-                    div.input
-                        input(type="text" name="username" placeholder="Enter your Username")
-                    div.input
-                        input(type="password" name="password" placeholder="Enter your Password")
-                    button(type='submit') Log In
+    content
+        section.create.row
+            h2 Enter your username and password to log in!
+            form(action="/login" method="POST")
+                input(type="text" name="username" placeholder="Enter your Username")
+                input(type="password" name="password" placeholder="Enter your Password")
+                button.col-small-4.col-medium-6(type='submit') Log In
