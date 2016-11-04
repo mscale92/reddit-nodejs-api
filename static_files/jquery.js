@@ -4,7 +4,7 @@ var jQuery = jQuery;
 
 
 
-
+    // enables me to use animateCss method
 $.fn.extend({
     animateCss: function (animationName) {
         var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
@@ -14,6 +14,8 @@ $.fn.extend({
     }
 });
   
+  
+//   Ya'll ready for this?
 $(document).ready(function(){
     
     // window scrolls
@@ -53,6 +55,21 @@ $(document).ready(function(){
             
         });
     
-    
+    // hide page buttons on homepage and last page
+        var pUrl = $(".prev a").attr("href");
+            // the negative value signifies that it is
+                //either the beginning or the end
+        
+        if(pUrl.includes("page=-1")){
+            $(".prev").hide();
+        }
+   
+        var nUrl = $(".next a").attr("href");
+        
+        if(nUrl.includes("page=-1")){
+            $(".next").hide();
+        }
+        
+        
 });
 

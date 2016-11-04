@@ -131,13 +131,16 @@ app.get('/', function(req, res) {
         var head = title;
         
         if(offset === 0){
-          prev = [{page: offset}];
+          //give it the value of negative one
+            // this value is used to hide the button via jquery file
+              // spec, function hide page buttons
+          prev = [{page: -1}];
           title = [{name: 'Homepage'}];
           head = [{name: 'Welcome to the Homepage!'}];
         }
-          //can't have negative offsets now can we?
+          //give it the value of negative one too
         else if(posts.length < limit){
-          next = [{page: 0}];
+          next = [{page: -1}];
         }
           //our last page's next just returns us to the homepage
           

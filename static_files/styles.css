@@ -57,9 +57,14 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         background: lavender;
         box-shadow: inset 0px 0px 15px steelblue;
         padding: .5em;
+        border-radius: 4%;
         
         text-transform: capitalize;
         cursor: pointer;
+    }
+    
+    .bounce-btn{
+            width: 66.666%;
     }
 
 

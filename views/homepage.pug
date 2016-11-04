@@ -47,11 +47,11 @@ block content
                 nav.nextPage
                     ul.row
                         each val in prev
-                            li.col-small-3
+                            li.prev.col-small-3
                                 a(href= "?sort=" + cat.sort + "&page=" + val.page) 
                                     div Previous
                         
                         each val in next
-                            li.col-small-3
+                            li.next.col-small-3
                                 a(href= "?sort=" + cat.sort + "&page=" + val.page) 
                                     div Next
