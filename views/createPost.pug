@@ -9,7 +9,8 @@ block content
             h2 Create a post!
             
             form.col-small-12(action="/createPost" method="POST")
-                input.box.col-small-10.col-large-8(type="text" name="title" placeholder="Enter the title")
+                input.col-small-10.col-large-8(type="text" name="title" placeholder="Enter the title")
+                input.url.col-small-10.col-large-8(type="url" name="url" placeholder="Enter a url")
                 textarea.box.col-small-10.col-large-8(name="content" rows="10" cols="30" placeholder="Enter content here")
                 
                 p.col-small-12 Select a Subreddit Topic:
@@ -17,4 +18,4 @@ block content
                         option(value="6") Default
                         option(value="1") Zelda
                         option(value="5") Music
-                button(type='submit') Create
+                button.col-small-4(type='submit') Create

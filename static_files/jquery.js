@@ -101,6 +101,14 @@ $(document).ready(function(){
             });
         });
         
+        
+    // Hide and reveal url value
+        // on create post form
+    
+    $(".url").click(function(){
+        $(".url").val("https://")
+    })
+        
 });
 
 // changes the values of the votes on the page without refreshing

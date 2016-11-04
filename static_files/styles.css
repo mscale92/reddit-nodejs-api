@@ -52,6 +52,10 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         flex-flow: column;
     }
     
+    textarea{
+        margin: .25em 0;
+    }
+    
     button{
         border: none;
         background: lavender;
