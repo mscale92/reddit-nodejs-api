@@ -142,14 +142,38 @@ app.get('/', function(req, res) {
         else if(posts.length < limit){
           next = [{page: -1}];
         }
-          //our last page's next just returns us to the homepage
+
           
+          
+          var user = null;
+          
+        // give current logged in user's id info
+          // so that the votes will be properly recorded
+        if (!req.loggedInUser) {
+          // if no one is logged in, just pass the id as zero
+            //no one has an id of zero
+            //and they will be denied at the /vote endpoint
+              //without a cookie
+          user = [{id: 0}];
+        }
+        
+        else{
+          // make an array with the object houseing the userId
+            // of the currently logged in user
+          var obj = req.loggedInUser;
+          user = [{id: obj.userId}];
+          console.log(user, "current user's id");
+        }
+        
+       
+        
         res.render('homepage', {posts: posts,
         next: next,
         prev: prev,
         title: title,
         head: head,
-        sort: sort
+        sort: sort,
+        user: user
         });
             //replaces the old code by doing all the html
             //templates in the pug file
@@ -245,6 +269,8 @@ app.post('/login', function(req, res) {
       .then(function(token){
         
         res.cookie('SESSION', token);
+        
+        
         //This assigns the string SESSION to our token value
           //The cookie function in express sends the cookie
           //to the user
@@ -346,7 +372,7 @@ app.get('/createPost', function(req, res){
 
 app.post('/createPost', function(req, res) {
   // before creating content, check if the user is logged in
-  
+  console.log(req.loggedInUser)
   
   
   if (!req.loggedInUser) {
@@ -413,6 +439,7 @@ app.post('/vote', function(req, res) {
   }
   else {
     console.log(req.body);
+    
     return reddit.createOrUpdateVote(req.body)
     .then(function(result){
       console.log(result);

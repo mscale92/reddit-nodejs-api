@@ -33,16 +33,17 @@ block content
                                 p Upvotes: #{val.up} 
                                 p Downvotes: #{val.down}
                         div.row.votes
-                            form(action='/vote', method='post')
-                                input(type='hidden', name='vote', value='1')
-                                input(type='hidden', name='postId', value= val.id)
-                                input(type='hidden', name='userId', value= val.user.id)
-                                button(type='submit') upvote this
-                            form(action='/vote', method='post')
-                                input(type='hidden', name='vote', value='-1')
-                                input(type='hidden', name='postId', value= val.id)
-                                input(type='hidden', name='userId', value= val.user.id)
-                                button(type='submit') downvote this
+                            each us in user
+                                form(action='/vote', method='post')
+                                    input(type='hidden', name='vote', value='1')
+                                    input(type='hidden', name='postId', value= val.id)
+                                    input(type='hidden', name='userId', value= us.id)
+                                    button(type='submit') upvote this
+                                form(action='/vote', method='post')
+                                    input(type='hidden', name='vote', value='-1')
+                                    input(type='hidden', name='postId', value= val.id)
+                                    input(type='hidden', name='userId', value= us.id)
+                                    button(type='submit') downvote this
             each cat in sort
                 nav.nextPage
                     ul.row

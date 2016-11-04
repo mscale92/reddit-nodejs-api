@@ -406,6 +406,7 @@ function getPromise(connect){
     
     createOrUpdateVote: function(vote){
       vote.vote = parseInt(vote.vote);
+      console.log(vote.userId, "vote obj")
       if(vote.vote === 1 || vote.vote === 0 || vote.vote === -1){
          return queryPromise(`INSERT INTO votes 
          SET postId = ?, userId = ?, vote = ?, createdAt = ?

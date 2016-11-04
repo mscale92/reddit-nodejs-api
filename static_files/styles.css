@@ -58,6 +58,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         box-shadow: inset 0px 0px 15px steelblue;
         padding: .5em;
         border-radius: 4%;
+            min-height: 2em;
         
         text-transform: capitalize;
         cursor: pointer;

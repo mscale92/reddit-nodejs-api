@@ -59,17 +59,22 @@ $(document).ready(function(){
         var pUrl = $(".prev a").attr("href");
             // the negative value signifies that it is
                 //either the beginning or the end
-        
-        if(pUrl.includes("page=-1")){
-            $(".prev").hide();
-        }
-   
+ 
         var nUrl = $(".next a").attr("href");
         
-        if(nUrl.includes("page=-1")){
-            $(".next").hide();
-        }
         
+        
+        if(!nUrl || !pUrl){
+            console.log("no buttons")
+        }
+        else{
+            if(nUrl.includes("page=-1")){
+                $(".next").hide();
+            }
+            else if(pUrl.includes("page=-1")){
+                $(".prev").hide();
+            }
+        }
         
 });
 
