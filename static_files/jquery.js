@@ -108,7 +108,19 @@ $(document).ready(function(){
     $(".url").click(function(){
         $(".url").val("https://")
     })
+    
+    
+    
+        // Suggest a title!
+        $(".suggest").click(function() {
+            var url = $(".url").val();
+            console.log(url)
+            $.get('/suggestTitle?url=' + url, function(data, status){
+                console.log(data, "boop")
+            })
+        })
         
+            
 });
 
 // changes the values of the votes on the page without refreshing
