@@ -56,7 +56,10 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         border: none;
         background: lavender;
         box-shadow: inset 0px 0px 15px steelblue;
-        padding: .5em
+        padding: .5em;
+        
+        text-transform: capitalize;
+        cursor: pointer;
     }
 
 
@@ -203,8 +206,12 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             }
             
             .votes{
-                align-self: center;
+                justify-content: space-around;
                 padding-bottom: 2em;
+            }
+            
+            .votes form:last-child button{
+                box-shadow: inset 0px 0px 20px firebrick;
             }
     
     
