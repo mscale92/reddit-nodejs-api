@@ -58,8 +58,9 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         box-shadow: inset 0px 0px 15px steelblue;
         padding: .5em;
         border-radius: 4%;
-            min-height: 2em;
         
+        min-height: 2em;
+        max-width: 20%;
         text-transform: capitalize;
         cursor: pointer;
     }
@@ -286,7 +287,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*create posts, login, and signup*/
   content .create{
       padding-top: 3em;
-      height: 50vh;
+      min-height: 50vh;
       
       flex-flow: column;
       margin: 0;
@@ -307,6 +308,8 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
       margin: .25em 0;
       height: 3em;
   }
+  
+  
   
     
 /*redirected pages*/
@@ -556,9 +559,10 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             text-align: start;
         }
         
+        
+        
         content .create form{
             flex-flow: column;
-            max-width: 300px;
         }
         
         content .create input,

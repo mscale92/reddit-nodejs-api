@@ -4,20 +4,17 @@ block title
     title Create a Post
 
 block content
-    #content
-        div.create
-            div.form
-                h2 Create a post!
-                form(action="/createPost" method="POST")
-                    div.input
-                        input(type="text" name="title" placeholder="Enter the title")
-                    div.input
-                        textarea(name="content" rows="10" cols="30" placeholder="Enter content here")
-                    
-                    p Select a Subreddit Topic:
-                    div.input
-                        select(name="sub" placeholder="Subreddit")
-                            option(value="6") Default
-                            option(value="1") Zelda
-                            option(value="5") Music
-                    button(type='submit') Create
+    content
+        section.create.row
+            h2 Create a post!
+            
+            form.col-small-12(action="/createPost" method="POST")
+                input.box.col-small-10.col-large-8(type="text" name="title" placeholder="Enter the title")
+                textarea.box.col-small-10.col-large-8(name="content" rows="10" cols="30" placeholder="Enter content here")
+                
+                p.col-small-12 Select a Subreddit Topic:
+                    select(name="sub" placeholder="Subreddit")
+                        option(value="6") Default
+                        option(value="1") Zelda
+                        option(value="5") Music
+                button(type='submit') Create

@@ -7,7 +7,7 @@ block content
     content
         section.create.row
             h2 Sign Up!
-            form(action="/signup" method="POST")
-                input(type="text" name="username" placeholder="Enter a Username")
-                input(type="password" name="password" placeholder="Create a Password")
+            form.col-small-12(action="/signup" method="POST")
+                input.col-small-10.col-large-4(type="text" name="username" placeholder="Enter a Username")
+                input.col-small-10.col-large-4(type="password" name="password" placeholder="Create a Password")
                 button.col-small-4.col-medium-6(type='submit') Sign up
