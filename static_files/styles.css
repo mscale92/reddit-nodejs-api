@@ -52,6 +52,12 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         flex-flow: column;
     }
     
+    button{
+        border: none;
+        background: lavender;
+        box-shadow: inset 0px 0px 15px steelblue;
+        padding: .5em
+    }
 
 
 /*nav inside header*/
@@ -135,11 +141,11 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         }
         
          .sort-list li{
-            border: 2px solid lavender;
+            border: 2px solid lightblue;
             background: lavender;
             text-align: center;
             margin-top: 1em;
-            
+            min-width: 20%;
         }
         
          .sort-list li a{
@@ -156,7 +162,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         
 
 
-/*wrapper section, where posts live*/
+/*wrapper section, where posts are displayed on homepage*/
 
     .wrapper{
         display: flex;
@@ -190,12 +196,43 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             .author{
                 text-align: center;
                 font-style: italic;
+                
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             
             .votes{
                 align-self: center;
                 padding-bottom: 2em;
             }
+    
+    
+    
+/*Single Post page*/
+
+    content.post{
+        
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+        text-align: center;
+    }
+    
+    article.text{
+        background: lavender;
+        border: 2px solid lightblue;
+    }
+    
+    content.post * {
+        max-width: 1000px;
+    }
+        /*grab all children, muwhahaha!*/
+    
+    .post p.user{
+        font-style: italic;
+    }
     
     /*comments*/
     .replies-1{
@@ -481,6 +518,8 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             }
         
         
+        
+        
     }
 /*end of medium personal*/
 
@@ -515,7 +554,10 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         }
     
     
-    
+        /*single post*/
+        content.post{
+            text-align: start;
+        }
     
     
 }

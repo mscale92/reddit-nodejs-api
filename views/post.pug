@@ -4,25 +4,23 @@ block title
     title Post
 
 block content
-    content
-        article.post-content
+    content.post.col-small-12
             each val in post
-                div.author-title
-                    h1= val.title
-                    p= "Written by: " + val.username
+                h1.col-small-12.col-medium-8= val.title
+                p.user.col-small-12.col-medium-8= "Written by: " + val.username
                     
-                div.text
+                article.text.col-small-12.col-medium-8
                     p= val.content
                 article.comments
                     .parent
                         each val in parent
                             p= val.text
                             
-                            .replies-1
+                            article.replies-1
                                 each v in reply1
                                     if v.parentId === val.id
                                         p= v.text
-                                        .replies-2
+                                        article.replies-2
                                             each rep in reply2
                                                 if rep.parentId === v.id
                                                     p= rep.text
