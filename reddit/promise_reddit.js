@@ -228,9 +228,13 @@ function getPromise(connect){
       // var offset = (options.page || 0) * limit;
       
       return queryPromise(`select 
-        p.id ,title ,url ,p.createdAt ,p.updatedAt ,username ,userId ,content
+        p.id ,title ,url ,p.createdAt ,p.updatedAt ,username ,p.userId ,content
+        ,sum(vote) as voteScore
+        ,sum(case when vote = 1 then 1 else 0 end) as up
+        ,sum(case when vote = -1 then 1 else 0 end) as down
         from posts p 
         join users u on (u.id = p.userId)  
+        LEFT JOIN votes v on (p.id = v.postId)
         where p. id = ?
         LIMIT ? OFFSET ?`, 
         [postId, 1, 0], connect)
@@ -406,7 +410,7 @@ function getPromise(connect){
     
     createOrUpdateVote: function(vote){
       vote.vote = parseInt(vote.vote);
-      console.log(vote.userId, "vote obj")
+      
       if(vote.vote === 1 || vote.vote === 0 || vote.vote === -1){
          return queryPromise(`INSERT INTO votes 
          SET postId = ?, userId = ?, vote = ?, createdAt = ?

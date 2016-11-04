@@ -2,8 +2,6 @@ var $ = $;
 var jQuery = jQuery;  
 
 
-
-
     // enables me to use animateCss method
 $.fn.extend({
     animateCss: function (animationName) {
@@ -76,5 +74,41 @@ $(document).ready(function(){
             }
         }
         
+        
+        
+        // Vote buttons!
+        $(".up").click(function(){
+                // first grab the data from the buttons!
+                    // use var names that match our
+                    //desired object keys for simplicity
+            var vote = $(this).data("direction");
+            var postId = $(this).data("postid");
+            var userId = $(this).data("userid");
+            
+            $.post("/vote", {"vote": vote, "postId": postId, "userId": userId}, function(data, status){
+                
+               changeVotes(data, postId);  
+            });
+        });
+        
+        $(".down").click(function(){
+            var vote = $(this).data("direction");
+            var postId = $(this).data("postid");
+            var userId = $(this).data("userid");
+            
+            $.post("/vote", {"vote": vote, "postId": postId, "userId": userId}, function(data, status){
+                changeVotes(data, postId);
+            });
+        });
+        
 });
 
+// changes the values of the votes on the page without refreshing
+function changeVotes(data, postId){
+    var voted = "." + postId
+                
+                $(voted + " .score").text("Score: " + data.voteScore).css({"color": "darkorchid"})
+                $(voted + " .upV").text("Upvotes: " + data.up).css({"color": "darkcyan"})
+                $(voted + " .downV").text("Downvotes: " + data.down).css({"color": "crimson"})
+                  
+}

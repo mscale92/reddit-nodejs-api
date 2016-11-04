@@ -23,27 +23,20 @@ block content
         section.wrapper
             ul.list-posts.row
                 each val in posts
-                    li.col-small-12.col-large-8 
+                    li(class="" + val.id).col-small-12.col-large-8
                         h2
                             a(href= '/post/?post=' + val.id)= val.title
                         div.row
                             p.author.col-small-6= "Created by " + val.user.username
+                            
                             aside.scores.col-small-4
-                                p Score: #{val.voteScore}
-                                p Upvotes: #{val.up} 
-                                p Downvotes: #{val.down}
+                                p.score Score: #{val.voteScore}
+                                p.upV Upvotes: #{val.up} 
+                                p.downV Downvotes: #{val.down}
                         div.row.votes
                             each us in user
-                                form(action='/vote', method='post')
-                                    input(type='hidden', name='vote', value='1')
-                                    input(type='hidden', name='postId', value= val.id)
-                                    input(type='hidden', name='userId', value= us.id)
-                                    button(type='submit') upvote this
-                                form(action='/vote', method='post')
-                                    input(type='hidden', name='vote', value='-1')
-                                    input(type='hidden', name='postId', value= val.id)
-                                    input(type='hidden', name='userId', value= us.id)
-                                    button(type='submit') downvote this
+                                button.vote-button.up(data-postid=val.id, data-userid=us.id, data-direction='1') UPVOTE
+                                button.vote-button.down(data-postid=val.id, data-userid=us.id, data-direction='-1') DOWNVOTE
             each cat in sort
                 nav.nextPage
                     ul.row

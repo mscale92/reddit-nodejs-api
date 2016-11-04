@@ -109,7 +109,7 @@ app.get('/', function(req, res) {
   }
   
   
-  console.log(req.query.sort)
+  console.log(req.query.sort, " is the category!")
 
   var offset = 0;
   var limit = 5;
@@ -123,7 +123,7 @@ app.get('/', function(req, res) {
     return reddit.getAllPosts({numPerPage: limit, page: offset, sortingMethod: sorting})
     .then(function(posts){
         // var category = req.query.sort; 
-        console.log(posts);
+        
         var sort = [{sort: sorting}];
         var prev = [{page: offset-1}];
         var next = [{page: offset+1}];
@@ -442,13 +442,31 @@ app.post('/vote', function(req, res) {
     
     return reddit.createOrUpdateVote(req.body)
     .then(function(result){
-      console.log(result);
-      res.redirect('/');
+      console.log("vote successful");
+        // our vote was successful!
+          // Make a JSON saying so :D
+      return reddit.getPost(req.body.postId)
+      .then(function(result){
+        console.log(result, "lions");
+       
+        result = result[0];
+        var obj = {"success": true, "voteScore": result.voteScore, "up": result.up, "down": result.down}
+       
+        res.json(obj)
+        
+      }) 
+      
     })
+    .catch(function(err){
+      res.status(500).send('an error occurred. please try again later!');
+      console.log(err);
+  });
     
       
   }
 });
+
+
 
 
 
