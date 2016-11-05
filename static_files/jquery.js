@@ -130,8 +130,20 @@ $(document).ready(function(){
     
   
     $('#autocomplete').autocomplete({
-        serviceUrl: '/suggest'
+        serviceUrl: '/suggest',
+        onSelect: function (suggestion) {
+            console.log(suggestion.data, "evening!");
+            
+            $(".sub-hidden").attr('value', suggestion.data);
+        }
     });
+    
+        // make the drop down run fluidly with
+            // the input
+    $('#autocomplete').on('input', function(e){
+        
+        $(this).css("border-bottom", "none");
+    })
     
     
             

@@ -413,7 +413,7 @@ function getPromise(connect){
       return queryPromise(`select * from subreddits where name like ?;`
       , [sug + "%"], connect)
       .then(function(result) {
-          console.log(result, " the subs");
+          
           return result;
       })
     },

@@ -371,6 +371,8 @@ app.get('/createPost', function(req, res){
   res.render('createPost');
 })
 
+
+// Create a Post
 app.post('/createPost', function(req, res) {
   // before creating content, check if the user is logged in
   console.log(req.loggedInUser)
@@ -384,7 +386,7 @@ app.post('/createPost', function(req, res) {
   else {
     var user = req.loggedInUser;
       //make our object look pretty
-    
+    console.log(req.loggedInUser)
     // here we have a logged in user, let's create the post with the user!
     return reddit.createPost({
       title: req.body.title,
@@ -490,14 +492,22 @@ app.get('/suggestTitle', function(req, res) {
 });
 
 
-
+// Subreddit Autocomplete!
 app.get('/suggest', function(req, res) {
     var suggestion = req.query.query;
     console.log(suggestion, "this is the suggestion");
     
     return reddit.getSubSuggest(suggestion)
     .then(function(results){
+      
       console.log(results)
+      var subSuggest = results.map(function(sub){
+        return {"value": sub.name, "data": sub.id}
+      })
+      
+      res.json({"query": "Unit",
+    "suggestions": subSuggest})
+    
     })
     
     

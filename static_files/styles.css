@@ -88,6 +88,12 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             width: 66.666%;
     }
 
+        /*styles for the autocomplete suggestions dropdown*/
+    .autocomplete-suggestions{
+        border: 4px solid lightblue;
+        border-top: none;
+        background: white;
+    }
 
 /*nav inside header*/
 
