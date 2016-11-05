@@ -471,12 +471,21 @@ app.post('/vote', function(req, res) {
 // Url Suggest!
 
 app.get('/suggestTitle', function(req, res) {
-    
+    console.log(req.query.url)
     return getPromise(req.query.url)
     .then(function(result){
-      var title = result.body.split("<title>")
-      title = title[1].split("</title>");
-     res.send(title[0]);
+      
+      
+      var title = result.body.split("</title>")
+      title = title[0].split("<title");
+      title = title[1].split(">");
+      
+      
+
+    res.send(title[1]);
+    })
+    .catch(function(err){
+      console.log(err);
     })
 });
 

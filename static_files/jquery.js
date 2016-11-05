@@ -114,12 +114,16 @@ $(document).ready(function(){
         // Suggest a title!
         $(".suggest").click(function() {
             var url = $(".url").val();
-            console.log(url)
+            console.log(url, "plenty of money")
+            
+            $(".url").before("<span>loading...</span>")
+            
             $.get('/suggestTitle?url=' + url, function(data, status){
-                console.log("whoohoo")
+                console.log("whoohoo");
+                $(".box span").hide();
                 $(".title").val(data);
-            })
-        })
+            });
+        });
         
             
 });
