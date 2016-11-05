@@ -236,7 +236,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
                 padding-bottom: 2em;
             }
             
-            .votes form:last-child button{
+            .votes button.down{
                 box-shadow: inset 0px 0px 20px firebrick;
             }
     

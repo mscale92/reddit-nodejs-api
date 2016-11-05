@@ -116,7 +116,8 @@ $(document).ready(function(){
             var url = $(".url").val();
             console.log(url)
             $.get('/suggestTitle?url=' + url, function(data, status){
-                console.log(data, "boop")
+                console.log("whoohoo")
+                $(".title").val(data);
             })
         })
         

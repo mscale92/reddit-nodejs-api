@@ -471,12 +471,34 @@ app.post('/vote', function(req, res) {
 // Url Suggest!
 
 app.get('/suggestTitle', function(req, res) {
-    console.log(req.query.url);
-    res.send("blah!");
+    
+    return getPromise(req.query.url)
+    .then(function(result){
+      var title = result.body.split("<title>")
+      title = title[1].split("</title>");
+     res.send(title[0]);
+    })
 });
 
 
 
+
+// our old getPromise function, tried and true
+  // uses a url to request!
+function getPromise(url){
+    return(
+        new Promise(function(resolve, reject){
+            request(url, function(err, result){
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        })
+    );
+}
 
 
 
