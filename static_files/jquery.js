@@ -125,6 +125,15 @@ $(document).ready(function(){
             });
         });
         
+    
+    // autocomplete a subreddit topic!
+    
+  
+    $('#autocomplete').autocomplete({
+        serviceUrl: '/suggest'
+    });
+    
+    
             
 });
 

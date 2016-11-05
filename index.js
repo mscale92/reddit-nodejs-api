@@ -491,6 +491,18 @@ app.get('/suggestTitle', function(req, res) {
 
 
 
+app.get('/suggest', function(req, res) {
+    var suggestion = req.query.query;
+    console.log(suggestion, "this is the suggestion");
+    
+    return reddit.getSubSuggest(suggestion)
+    .then(function(results){
+      console.log(results)
+    })
+    
+    
+});
+
 
 // our old getPromise function, tried and true
   // uses a url to request!

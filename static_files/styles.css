@@ -79,7 +79,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         border-radius: 4%;
         
         min-height: 2em;
-        max-width: 20%;
+        min-width: 25%;
         text-transform: capitalize;
         cursor: pointer;
     }
@@ -552,7 +552,11 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
                 margin-top: 0;
             }
         
-        
+        /*button*/
+        button{
+            min-width: 20%;
+            max-width: 25%;
+        }
         
         
     }

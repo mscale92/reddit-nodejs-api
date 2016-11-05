@@ -408,6 +408,18 @@ function getPromise(connect){
     },
     //end of getAllSubreddits
     
+    
+    getSubSuggest: function(sug){
+      return queryPromise(`select * from subreddits where name like ?;`
+      , [sug + "%"], connect)
+      .then(function(result) {
+          console.log(result, " the subs");
+          return result;
+      })
+    },
+    // end of getSubSuggest
+    
+    
     createOrUpdateVote: function(vote){
       vote.vote = parseInt(vote.vote);
       
