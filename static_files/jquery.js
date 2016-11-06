@@ -127,34 +127,56 @@ $(document).ready(function(){
         
     
     // autocomplete a subreddit topic!
-    
-  
+        
+        
     $('#autocomplete').autocomplete({
-        serviceUrl: '/suggest',
+        serviceUrl: '/autocomplete',
+        onSearchComplete: function (query, suggestions) {
+            console.log(suggestions.data, "morning!!");
+            if(suggestions.data === undefined){
+                
+            }
+        },
         onSelect: function (suggestion) {
             console.log(suggestion.data, "evening!");
-            
-            $(".sub-hidden").attr('value', suggestion.data);
+                // negative one is the
+            if(suggestion.data === -1){
+                
+            }
+            else{
+                $(".sub-hidden").attr('value', suggestion.data);
+            }
         }
     });
     
         // make the drop down run fluidly with
             // the input
-    $('#autocomplete').on('input', function(e){
+        $('#autocomplete').on('input', function(e){
+            $(this).css("border-bottom", "none");
+           
+        })
+            // make it reappear if anything else on the page is clicked!
+        $('*:not(#autocomplete)').click(function() {
+            $("#autocomplete").css("border-bottom", "4px solid lightblue");
+        })
         
-        $(this).css("border-bottom", "none");
-    })
+        
     
     
-            
+    
+    // Hide empty post url!
+        //if the post's url is empty
+        var hrefPost = $(".post-url").attr("href")
+        if(!hrefPost){
+            $(".post-url").hide();
+        }    
 });
 
 // changes the values of the votes on the page without refreshing
 function changeVotes(data, postId){
     var voted = "." + postId
-                
-                $(voted + " .score").text("Score: " + data.voteScore).css({"color": "darkorchid"})
-                $(voted + " .upV").text("Upvotes: " + data.up).css({"color": "darkcyan"})
-                $(voted + " .downV").text("Downvotes: " + data.down).css({"color": "crimson"})
-                  
+        $(voted + " .score").text("Score: " + data.voteScore).css({"color": "darkorchid"})
+        $(voted + " .upV").text("Upvotes: " + data.up).css({"color": "darkcyan"})
+        $(voted + " .downV").text("Downvotes: " + data.down).css({"color": "crimson"})
+          
 }

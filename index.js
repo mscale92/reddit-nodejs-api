@@ -500,20 +500,26 @@ app.get('/suggestTitle', function(req, res) {
 
 
 // Subreddit Autocomplete!
-app.get('/suggest', function(req, res) {
+app.get('/autocomplete', function(req, res) {
     var suggestion = req.query.query;
     console.log(suggestion, "this is the suggestion");
     
     return reddit.getSubSuggest(suggestion)
     .then(function(results){
-      
-      console.log(results)
+       
       var subSuggest = results.map(function(sub){
-        return {"value": sub.name, "data": sub.id}
-      })
+        return {value: sub.name, data: sub.id};
+      });
+       
+      console.log(subSuggest);
+        // if the subreddit does not exist
+      if(subSuggest.length === 0){
+        subSuggest.push({value: "-no results-", data: -1});
+      }
       
-      res.json({"query": "Unit",
-    "suggestions": subSuggest})
+      // send our data as a json file to jquery
+      res.json({query: "Unit",
+      suggestions: subSuggest});
     
     })
     
