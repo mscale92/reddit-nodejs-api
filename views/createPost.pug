@@ -7,8 +7,8 @@ block content
     content
         section.create.row
             h2 Create a post!
-            
-            form.col-small-12(action="/createPost" method="POST")
+            h3.empty 
+            form.post-form.col-small-12(action="/createPost" method="POST")
                 .box.col-small-9.col-large-8
                     input.title.col-small-12(type="text" name="title" placeholder="Enter the title")
                 .box.col-small-9.col-large-8
@@ -18,5 +18,12 @@ block content
                     textarea.col-small-12(name="content" rows="10" cols="30" placeholder="Enter content here")
                 .box.col-small-9.col-large-8
                     input.col-small-12#autocomplete(type="text" name="subreddit" placeholder="Enter a subreddit topic!")
-                input.sub-hidden(type="hidden" name="sub")
-                button.col-small-4(type='submit') Create
+                    input.sub-hidden(type="hidden" name="sub")
+                    button.post-btn.col-small-4(type='submit') Create
+            .sub-form.col-small-12
+                h3 Don't see the subreddit you want?
+                p Feel free to make one!
+                .box.newsub.col-small-9.col-large-8(type="hidden")
+                    input.col-small-12(type="text" name="name" placeholder="Enter a subreddit topic")
+                    textarea.col-small-12(name="description" rows="5" cols="30" placeholder="Enter a brief description")
+                    button.sub-btn.col-small-4(type="button") Make Subreddit!

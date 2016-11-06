@@ -125,27 +125,51 @@ $(document).ready(function(){
             });
         });
         
+        
+        
+    // Make a subreddit!
+     $('.sub-btn').click(function(){
+        var name = $(".newsub input").val();
+        var description= $(".newsub textarea").val();
+        $.post('/newSub', {name: name, description: description}, function(data, status) {
+            
+        })
+    })
     
     // autocomplete a subreddit topic!
-        
+
         
     $('#autocomplete').autocomplete({
         serviceUrl: '/autocomplete',
         onSearchComplete: function (query, suggestions) {
-            console.log(suggestions.data, "morning!!");
-            if(suggestions.data === undefined){
+            console.log(suggestions, "morning!!");
+            
+            if(suggestions[0].data === -1){
+                console.log("blue")
+                    // first prevent the form from being submitted
+                $('.post-form button').on('click', function(event){
+                    event.preventDefault();
+                    $('.empty').text("Cannot submit a subreddit that does not exist")
+                    $('#autocomplete').animateCss('shake');
+                })
+
                 
+            }
+            
+            else{
+                console.log("red")
+                $('.post-form button').unbind('click')
+                $('.empty').text(" ")
+                formFilled();
             }
         },
         onSelect: function (suggestion) {
+            
             console.log(suggestion.data, "evening!");
-                // negative one is the
-            if(suggestion.data === -1){
-                
-            }
-            else{
-                $(".sub-hidden").attr('value', suggestion.data);
-            }
+             
+            
+            $(".sub-hidden").attr('value', suggestion.data);
+            
         }
     });
     
@@ -157,19 +181,46 @@ $(document).ready(function(){
         })
             // make it reappear if anything else on the page is clicked!
         $('*:not(#autocomplete)').click(function() {
-            $("#autocomplete").css("border-bottom", "4px solid lightblue");
+            $("#autocomplete").off('input');
         })
         
         
     
     
     
-    // Hide empty post url!
+        // Hide empty post url!
         //if the post's url is empty
         var hrefPost = $(".post-url").attr("href")
         if(!hrefPost){
             $(".post-url").hide();
-        }    
+        }  
+        
+        
+    // cannot Submit form until all fields are filled
+        function formFilled(){
+            $('form').on('submit', function(event){
+                event.preventDefault();
+               
+                var empty = $(this).find("input").filter(function() {
+                    return this.value === "";
+                });
+                
+                if(empty.length) {
+                    $('.empty').text("Please fill in all fields!")
+                    $('form').animateCss('shake');
+                }
+                
+                else{
+                    $('.empty').text(" ")
+                    $('form').unbind('submit');
+                }
+                
+            })
+        }   
+        
+            // run the function
+        formFilled();
+        
 });
 
 // changes the values of the votes on the page without refreshing

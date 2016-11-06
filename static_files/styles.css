@@ -349,7 +349,15 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
   }
   
   
+  .create h3{
+      color: white;
+  }
   
+  .create .post-btn{
+        max-width: none;
+        align-self: flex-start;
+        margin-top: 2em;
+    }
     
 /*redirected pages*/
     .redirected{

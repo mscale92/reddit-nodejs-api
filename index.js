@@ -502,6 +502,7 @@ app.get('/suggestTitle', function(req, res) {
 // Subreddit Autocomplete!
 app.get('/autocomplete', function(req, res) {
     var suggestion = req.query.query;
+    console.log(req.query)
     console.log(suggestion, "this is the suggestion");
     
     return reddit.getSubSuggest(suggestion)
@@ -520,11 +521,22 @@ app.get('/autocomplete', function(req, res) {
       // send our data as a json file to jquery
       res.json({query: "Unit",
       suggestions: subSuggest});
-    
+      // res.send("poop")
     })
     
     
 });
+
+
+//Make a new subreddit!
+app.post('/newSub', function(req, res) {
+   console.log(req.body);
+    reddit.createSubreddit(req.body)
+    .then(function(result){
+      console.log(result);
+    })
+});
+
 
 
 // our old getPromise function, tried and true

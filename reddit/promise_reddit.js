@@ -382,6 +382,15 @@ function getPromise(connect){
         .then(function(subResult){
           return subResult;
         })
+        .catch(function(err){
+        if(err.code === 'ER_DUP_ENTRY'){
+          console.log('That topic already exists!');
+          return "duplicate";
+        }
+        else{
+          console.log(err, "there was an error");
+        }
+      })
     },
     //end of createSubreddit function
     
