@@ -165,16 +165,17 @@ $(document).ready(function(){
             }
             
             else{
-                
-                $('.post-form .post-btn').on('click')
-                $('.empty').text(" ")
-                formFilled();
+                console.log("red")
+                 $('.post-form .post-btn').off('click').on('click');
+                 $('.empty').text(" ");
+                    
+               
             }
         },
         onSelect: function (suggestion) {
             
             console.log(suggestion.data, "evening!");
-             
+          
             
             $(".sub-hidden").attr('value', suggestion.data);
             

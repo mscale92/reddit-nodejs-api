@@ -265,7 +265,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     article.text{
         background: lavender;
         border: 2px solid lightblue;
-        padding: 1.5em 0;
+        padding: 1.5em;
     }
     
     content.post * {
@@ -336,14 +336,15 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
       text-align: center;
   }
   
-  .create form{
+  .create form,
+  .sub-form{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
   }
   
   .create form input,
-  .create form button{
+  .create button{
       margin: .25em 0;
       height: 3em;
   }
@@ -605,16 +606,16 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     /*Create post, login, and signup*/
         
         content .create{
-            margin-left: 5em;
-            align-items: flex-start;
+            margin: 0 auto;
             text-align: start;
+            min-width: 75%;
+        }
+        
+        content .box{
+            padding: .75em;
         }
         
         
-        
-        content .create form{
-            flex-flow: column;
-        }
         
         content .create input,
         content .create button{
