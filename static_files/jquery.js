@@ -132,7 +132,15 @@ $(document).ready(function(){
         var name = $(".newsub input").val();
         var description= $(".newsub textarea").val();
         $.post('/newSub', {name: name, description: description}, function(data, status) {
-            
+            console.log(data, "groovy!");
+            if(data === "duplicate"){
+                $('.dup').text("Wait a minute, " + name + " already exists. Try something more original!")
+            }
+            else{
+                $('.dup').text(" ");
+                $('.newsub input').val("");
+                $('.newsub textarea').val("");
+            }
         })
     })
     
@@ -145,9 +153,9 @@ $(document).ready(function(){
             console.log(suggestions, "morning!!");
             
             if(suggestions[0].data === -1){
-                console.log("blue")
+               
                     // first prevent the form from being submitted
-                $('.post-form button').on('click', function(event){
+                $('.post-form .post-btn').on('click', function(event){
                     event.preventDefault();
                     $('.empty').text("Cannot submit a subreddit that does not exist")
                     $('#autocomplete').animateCss('shake');
@@ -157,8 +165,8 @@ $(document).ready(function(){
             }
             
             else{
-                console.log("red")
-                $('.post-form button').unbind('click')
+                
+                $('.post-form .post-btn').on('click')
                 $('.empty').text(" ")
                 formFilled();
             }

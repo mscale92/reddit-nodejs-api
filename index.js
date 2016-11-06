@@ -502,7 +502,7 @@ app.get('/suggestTitle', function(req, res) {
 // Subreddit Autocomplete!
 app.get('/autocomplete', function(req, res) {
     var suggestion = req.query.query;
-    console.log(req.query)
+    
     console.log(suggestion, "this is the suggestion");
     
     return reddit.getSubSuggest(suggestion)
@@ -534,6 +534,11 @@ app.post('/newSub', function(req, res) {
     reddit.createSubreddit(req.body)
     .then(function(result){
       console.log(result);
+      
+      res.send(result);
+    })
+    .catch(function(err){
+      console.log("There was an error: ", err);
     })
 });
 
