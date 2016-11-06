@@ -8,9 +8,9 @@ block content
             each val in post
                 h1.col-small-12.col-medium-8#title= val.title
                 p.user.col-small-12.col-medium-8= "Written by: " + val.username
-                    
+                a.post-url.col-small-12.col-medium-8(href= val.url target="_blank") A beautiful Site   
                 article.text.col-small-12.col-medium-8
-                    p= val.content
+                    p !{val.content}
                 article.comments
                     .parent
                         each val in parent

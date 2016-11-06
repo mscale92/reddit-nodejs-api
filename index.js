@@ -234,7 +234,7 @@ app.get('/post', function(req, res){
         }
       })
       
-      console.log(reply2)
+      
       
       res.render("post", {post: post,
       parent: parent,
@@ -386,14 +386,21 @@ app.post('/createPost', function(req, res) {
   else {
     var user = req.loggedInUser;
       //make our object look pretty
-    console.log(req.loggedInUser)
+    
+    
+      //let's replace all /r and /n's with a <br />
+        // This way our pug can properly render all returns
+        //and new lines as html line breaks <br />
+    var content = req.body.content.replace(/\n?\r\n/g, '<br />' );
+    
+    
     // here we have a logged in user, let's create the post with the user!
     return reddit.createPost({
       title: req.body.title,
       url: req.body.url,
       userId: user.userId,
       sub: req.body.sub,
-      content: req.body.content
+      content: content
     })
     .then(function(result){
       console.log(result);
@@ -453,11 +460,11 @@ app.post('/vote', function(req, res) {
         console.log(result, "lions");
        
         result = result[0];
-        var obj = {"success": true, "voteScore": result.voteScore, "up": result.up, "down": result.down}
+        var obj = {"success": true, "voteScore": result.voteScore, "up": result.up, "down": result.down};
        
-        res.json(obj)
+        res.json(obj);
         
-      }) 
+      }); 
       
     })
     .catch(function(err){

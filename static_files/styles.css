@@ -94,6 +94,9 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
         border-top: none;
         background: white;
     }
+    
+    
+    
 
 /*nav inside header*/
 
@@ -214,7 +217,7 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
             background: lightsteelblue;
             border: 2px solid lightblue;
             margin: 2em 0;
-            
+            text-align: center;
             display: flex;
             flex-flow: column;
         }
@@ -251,17 +254,18 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
 /*Single Post page*/
 
     content.post{
-        
+        padding-top: 2em;
         flex-flow: column;
         justify-content: center;
         align-items: center;
-        height: 50vh;
+        min-height: 50vh;
         text-align: center;
     }
     
     article.text{
         background: lavender;
         border: 2px solid lightblue;
+        padding: 1.5em 0;
     }
     
     content.post * {
@@ -272,6 +276,16 @@ html{box-sizing:border-box;}*,*:before,*:after{box-sizing:inherit;}
     .post p.user{
         font-style: italic;
     }
+    
+    a.post-url{
+        margin: 2em;
+        font-style: italic;
+        font-size: 1.5rem;
+    }
+    
+        a.post-url:hover{
+            color: lightblue;
+        }
     
     /*comments*/
     .replies-1{
